@@ -120,19 +120,19 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               SizedBox(height: 20.0),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(
                   labelText: 'Username',
                 ),
               ),
               SizedBox(height: 20.0),
-              TextField(
+              const TextField(
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   // Tambahkan logika autentikasi di sini
@@ -156,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: Text('Login'),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                         builder: (context) => ResetPasswordPage()),
                   );
                 },
-                child: Text('Lupa Password?'),
+                child: const Text('Lupa Password?'),
               ),
             ],
           ),
@@ -225,7 +225,7 @@ class _TenantHomePageState extends State<TenantHomePage> {
                   searchText = value;
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Cari Kost',
                 prefixIcon: Icon(Icons.search),
               ),
@@ -253,7 +253,7 @@ class _TenantHomePageState extends State<TenantHomePage> {
                           Container(
                             height: 200,
                             width: double.infinity,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(15.0),
                                 topRight: Radius.circular(15.0),
@@ -271,7 +271,7 @@ class _TenantHomePageState extends State<TenantHomePage> {
                               children: <Widget>[
                                 Text(
                                   kost.name,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -279,7 +279,7 @@ class _TenantHomePageState extends State<TenantHomePage> {
                                 SizedBox(height: 5),
                                 Text(
                                   kost.location,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.grey,
                                   ),
@@ -365,20 +365,20 @@ class KostRegistrationPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 labelText: 'Nama Kost',
               ),
             ),
             SizedBox(height: 20.0),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 labelText: 'Alamat Kost',
               ),
             ),
             SizedBox(height: 20.0),
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Jenis Kost',
               ),
               items: ['Pria', 'Wanita', 'Campuran'].map((String jenis) {
@@ -390,7 +390,7 @@ class KostRegistrationPage extends StatelessWidget {
               onChanged: (String? value) {},
             ),
             SizedBox(height: 20.0),
-            TextField(
+            const TextField(
               maxLines: 3,
               decoration: InputDecoration(
                 labelText: 'Deskripsi Kost',
@@ -428,7 +428,7 @@ class OwnerHomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
+      body: const Center(
         child: Text('Selamat Datang, Pemilik Kost!'),
       ),
     );
@@ -467,7 +467,7 @@ class AdminHomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
+      body: const Center(
         child: Text('Selamat Datang, Admin!'),
       ),
     );
@@ -526,7 +526,7 @@ class KostDetailPage extends StatelessWidget {
           children: <Widget>[
             Text(
               'Nama Kost: ${kost.name}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -534,21 +534,21 @@ class KostDetailPage extends StatelessWidget {
             SizedBox(height: 10.0),
             Text(
               'Alamat Kost: ${kost.location}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
               ),
             ),
             SizedBox(height: 10.0),
             Text(
               'Jenis Kost: ${kost.type}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
               ),
             ),
             SizedBox(height: 10.0),
             Text(
               'Deskripsi Kost: ${kost.description}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
               ),
             ),
@@ -579,19 +579,19 @@ class RegistrationPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              TextField(
+              const TextField(
                 decoration: InputDecoration(
                   labelText: 'Nama',
                 ),
               ),
               SizedBox(height: 20.0),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(
                   labelText: 'Email',
                 ),
               ),
               SizedBox(height: 20.0),
-              TextField(
+              const TextField(
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -625,7 +625,7 @@ class ResetPasswordPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              TextField(
+              const TextField(
                 decoration: InputDecoration(
                   labelText: 'Email',
                 ),
