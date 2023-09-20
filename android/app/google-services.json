@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "309109681380",
+    "project_id": "kostion-da4af",
+    "storage_bucket": "kostion-da4af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309109681380:android:48c552e4487e677eac90f1",
+        "android_client_info": {
+          "package_name": "com.example.kostion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXlg2ejUl6a_taFrZ5q8ZYxKAjNW2s1Hc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
