@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kostion/presentation/newKostListPage.dart';
+import 'package:kostion/data/model/kost.dart';
 
 class AdminHomePage extends StatelessWidget {
   @override

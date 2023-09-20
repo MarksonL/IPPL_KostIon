@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kostion/data/model/userProfile.dart';
 import 'package:kostion/presentation/adminHomePage.dart';
 import 'package:kostion/presentation/ownerHomePage.dart';
 import 'package:kostion/presentation/registrationPage.dart';
@@ -8,34 +9,6 @@ import 'package:kostion/presentation/tenantHomePage.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
-}
-
-enum UserType { tenant, owner, admin }
-
-class UserProfile {
-  final String name;
-  final String email;
-  final UserType userType;
-
-  UserProfile({
-    required this.name,
-    required this.email,
-    required this.userType,
-  });
-}
-
-class Kost {
-  final String name;
-  final String location;
-  final String type; // Jenis kost (pria, wanita, campuran)
-  final String description; // Deskripsi kost
-
-  Kost({
-    required this.name,
-    required this.location,
-    required this.type,
-    required this.description,
-  });
 }
 
 List<UserProfile> userProfiles = [
