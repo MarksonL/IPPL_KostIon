@@ -76,17 +76,29 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 const SizedBox(height: 20.0),
-                const TextField(
+                TextField(
                   decoration: InputDecoration(
-                    labelText: 'Username',
-                  ),
+                      labelText: 'Username',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(18),
+                          borderSide: BorderSide.none),
+                      fillColor:
+                          Theme.of(context).primaryColor.withOpacity(0.1),
+                      filled: true,
+                      prefixIcon: Icon(Icons.person)),
                 ),
                 const SizedBox(height: 20.0),
-                const TextField(
+                TextField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Password',
-                  ),
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(18),
+                          borderSide: BorderSide.none),
+                      fillColor:
+                          Theme.of(context).primaryColor.withOpacity(0.1),
+                      filled: true,
+                      prefixIcon: Icon(Icons.lock)),
                 ),
                 const SizedBox(height: 20.0),
                 ElevatedButton(
@@ -113,7 +125,14 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     }
                   },
-                  child: const Text('Login'),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: StadiumBorder(),
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                  ),
                 ),
                 const SizedBox(height: 20.0),
                 TextButton(
