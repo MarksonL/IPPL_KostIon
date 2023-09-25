@@ -11,20 +11,6 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-List<UserProfile> userProfiles = [
-  UserProfile(
-    name: 'John Doe',
-    email: 'john@example.com',
-    userType: UserType.tenant,
-  ),
-  UserProfile(
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    userType: UserType.owner,
-  ),
-  // Tambahkan profil pengguna lainnya di sini
-];
-
 class _LoginPageState extends State<LoginPage> {
   UserType? selectedUserType;
 
@@ -56,16 +42,6 @@ class _LoginPageState extends State<LoginPage> {
                     RadioListTile<UserType>(
                       title: const Text('Pemilik Kost'),
                       value: UserType.owner,
-                      groupValue: selectedUserType,
-                      onChanged: (UserType? value) {
-                        setState(() {
-                          selectedUserType = value;
-                        });
-                      },
-                    ),
-                    RadioListTile<UserType>(
-                      title: const Text('Admin'),
-                      value: UserType.admin,
                       groupValue: selectedUserType,
                       onChanged: (UserType? value) {
                         setState(() {

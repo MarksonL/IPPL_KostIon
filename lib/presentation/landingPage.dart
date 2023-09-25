@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kostion/presentation/adminHomePage.dart';
-import 'package:kostion/presentation/loginPage.dart';
+import 'package:kostion/presentation/loginPageTenant.dart';
 import 'package:kostion/presentation/ownerHomePage.dart';
 import 'package:kostion/presentation/tenantHomePage.dart';
 
