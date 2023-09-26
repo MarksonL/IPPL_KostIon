@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kostion/presentation/kostSearchDelegate.dart';
 import 'package:kostion/data/model/kostData.dart';
+import 'package:kostion/presentation/tenant/userProfil.dart';
 
 class TenantHomePage extends StatefulWidget {
   @override
@@ -35,6 +36,18 @@ class _TenantHomePageState extends State<TenantHomePage> {
       ),
       body: Column(
         children: [
+          // Header
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Selamat Datang! Cari Kos Dengan Mudah',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          // Kolom Pencarian
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -114,6 +127,30 @@ class _TenantHomePageState extends State<TenantHomePage> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Cari Kos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Kos Saya',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+          ),
+        ],
+        onTap: (int index) {
+          if (index == 2) {
+            // Jika pengguna mengklik ikon profil (indeks 2)
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => TenantProfilePage()),
+            );
+          }
+        },
       ),
     );
   }
