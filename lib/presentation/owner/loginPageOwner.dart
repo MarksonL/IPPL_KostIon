@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kostion/data/model/userProfile.dart';
-import 'package:kostion/presentation/admin/adminHomePage.dart';
+// import 'package:kostion/presentation/admin/adminHomePage.dart';
 import 'package:kostion/presentation/owner/ownerHomePage.dart';
 import 'package:kostion/presentation/registrationPage.dart';
 import 'package:kostion/presentation/resetpasswordpage.dart';
-import 'package:kostion/presentation/tenant/tenantHomePage.dart';
+// import 'package:kostion/presentation/tenant/tenantHomePage.dart';
 
 class LoginPageOwner extends StatefulWidget {
   @override
@@ -79,27 +79,31 @@ class _LoginPageOwnerState extends State<LoginPageOwner> {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => OwnerHomePage()),
+                    );
                     // Tambahkan logika autentikasi di sini
                     // Jika autentikasi berhasil, arahkan pengguna ke halaman beranda sesuai tipe pengguna
-                    if (selectedUserType == UserType.tenant) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TenantHomePage()),
-                      );
-                    } else if (selectedUserType == UserType.owner) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OwnerHomePage()),
-                      );
-                    } else if (selectedUserType == UserType.admin) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AdminHomePage()),
-                      );
-                    }
+                    // if (selectedUserType == UserType.tenant) {
+                    //   Navigator.pushReplacement(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => TenantHomePage()),
+                    //   );
+                    // } else if (selectedUserType == UserType.owner) {
+                    //   Navigator.pushReplacement(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => OwnerHomePage()),
+                    //   );
+                    // } else if (selectedUserType == UserType.admin) {
+                    //   Navigator.pushReplacement(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => AdminHomePage()),
+                    //   );
+                    // }
                   },
                   child: const Text(
                     'Login',

@@ -23,12 +23,6 @@ class MainPage extends StatelessWidget {
                     Row(
                       // Menambahkan baris untuk ikon menu dan teks "NeBengK"
                       children: [
-                        // Icon(
-                        //   Icons.menu,
-                        //   color: Colors
-                        //       .black, // Menggunakan Colors.black untuk warna ikon
-                        //   size: 30,
-                        // ),
                         SizedBox(width: 8), // Spasi antara ikon dan teks
                         Text(
                           "Masuk ke Kost Ion Sebagai:",
@@ -40,30 +34,6 @@ class MainPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Container(
-                    //   padding: EdgeInsets.all(8),
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.amber,
-                    //     borderRadius: BorderRadius.circular(10),
-                    //     boxShadow: [
-                    //       BoxShadow(
-                    //         color: Colors.amber.withOpacity(
-                    //             0.5), // Menggunakan warna yang valid
-                    //         blurRadius: 2,
-                    //       ),
-                    //     ],
-                    //   ),
-                    //   child: InkWell(
-                    //     onTap: () {},
-                    //     child: Icon(
-                    //       CupertinoIcons
-                    //           .house, // Menggunakan CupertinoIcons untuk ikon profil
-                    //       size: 30,
-                    //       color: const Color.fromARGB(255, 0, 0,
-                    //           0), // Menggunakan Colors.white untuk warna ikon
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
