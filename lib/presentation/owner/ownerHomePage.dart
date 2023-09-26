@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kostion/presentation/kostRegistrationPage.dart';
+import 'package:kostion/presentation/admin/kostRegistrationPage.dart';
 
 class OwnerHomePage extends StatelessWidget {
   @override

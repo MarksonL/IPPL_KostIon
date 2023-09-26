@@ -16,6 +16,12 @@ class LoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: LandingPage(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Colors.amber,
+          secondary: const Color(0xFFFFC107),
+        ),
+      ),
     );
   }
 }

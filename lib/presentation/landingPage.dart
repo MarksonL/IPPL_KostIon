@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kostion/presentation/adminHomePage.dart';
-import 'package:kostion/presentation/loginPageTenant.dart';
-import 'package:kostion/presentation/ownerHomePage.dart';
-import 'package:kostion/presentation/tenantHomePage.dart';
+import 'package:kostion/presentation/admin/adminHomePage.dart';
+import 'package:kostion/presentation/mainPage.dart';
+import 'package:kostion/presentation/owner/ownerHomePage.dart';
+import 'package:kostion/presentation/tenant/tenantHomePage.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -36,7 +36,7 @@ class LandingPage extends StatelessWidget {
                 },
               );
             } else {
-              return LoginPage();
+              return MainPage();
             }
           }),
     );

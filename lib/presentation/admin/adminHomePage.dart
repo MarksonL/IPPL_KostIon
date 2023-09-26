@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kostion/presentation/blockListPage.dart';
-import 'package:kostion/presentation/newKostListPage.dart';
+import 'package:kostion/presentation/admin/blockListPage.dart';
+import 'package:kostion/presentation/admin/newKostListPage.dart';
 import 'package:kostion/data/model/kost.dart';
 
 class AdminHomePage extends StatelessWidget {
