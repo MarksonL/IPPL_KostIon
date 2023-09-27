@@ -33,24 +33,23 @@ class _HomePageState extends State<HomePage> {
 }
 
 class TenantRegistrationPage extends StatelessWidget {
-  static Future<User?> loginUsingEmailPassword(
-      {required String email,
-      required String password,
-      required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-    try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      user = userCredential.user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == "user-not-found") {}
-    }
-    return user;
-  }
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final TextEditingController cUser = TextEditingController();
+  final TextEditingController cPass = TextEditingController();
 
-  TextEditingController cUser = TextEditingController();
-  TextEditingController cPass = TextEditingController();
+  Future<void> signUp() async {
+    try {
+      final UserCredential userCredential =
+          await auth.createUserWithEmailAndPassword(
+              email: cUser.text, password: cPass.text);
+      final User? user = userCredential.user;
+      if (user != null) {
+        print('berhasil mendaftar sebagai: ${user.email}');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user already exist") {}
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +70,7 @@ class TenantRegistrationPage extends StatelessWidget {
               ),
               const SizedBox(height: 20.0),
               const TextField(
+                controller: cUser,
                 decoration: InputDecoration(
                   labelText: 'Email',
                 ),
@@ -84,7 +84,9 @@ class TenantRegistrationPage extends StatelessWidget {
               ),
               const SizedBox(height: 20.0),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  String email = cUser.text;
+                  await signUp(email);
                   // Tambahkan logika pendaftaran di sini
                 },
                 child: const Text('Daftar'),
