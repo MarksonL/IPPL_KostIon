@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kostion/presentation/kostDetailPage.dart';
+import 'package:kostion/presentation/admin/kostDetailPage.dart';
 import 'package:kostion/data/model/kost.dart';
 
 class NewKostListPage extends StatelessWidget {
