@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kostion/data/model/userProfile.dart';
+import 'package:kostion/presentation/owner/OwnerRegistrationPage.dart';
+import 'OwnerResetPasswordPage.dart';
 import 'package:kostion/presentation/owner/ownerHomePage.dart';
-import 'package:kostion/presentation/registrationPage.dart';
-import 'package:kostion/presentation/resetpasswordpage.dart';
 
 class LoginPageOwner extends StatefulWidget {
   @override
@@ -35,7 +35,7 @@ class _LoginPageOwnerState extends State<LoginPageOwner> {
   }
 
   _header(context) {
-    return Column(
+    return const Column(
       children: [
         Text(
           'Selamat Datang Pemilik Kos!',
@@ -56,7 +56,7 @@ class _LoginPageOwnerState extends State<LoginPageOwner> {
       children: [
         TextField(
           decoration: InputDecoration(
-              labelText: "Username",
+              labelText: "Email",
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
                   borderSide: BorderSide.none),
@@ -102,7 +102,7 @@ class _LoginPageOwnerState extends State<LoginPageOwner> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ResetPasswordPage()),
+          MaterialPageRoute(builder: (context) => OwnerResetPasswordPage()),
         );
       },
       child: const Text('Lupa Password?'),
@@ -118,7 +118,8 @@ class _LoginPageOwnerState extends State<LoginPageOwner> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => RegistrationPage()),
+                MaterialPageRoute(
+                    builder: (context) => OwnerRegistrationPage()),
               );
             },
             child: const Text('Daftar'))

@@ -1,8 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:kostion/data/model/userProfile.dart';
-import 'package:kostion/presentation/registrationPage.dart';
-import 'package:kostion/presentation/resetpasswordpage.dart';
+import 'package:kostion/presentation/tenant/TenantResetPasswordPage.dart';
+import 'package:kostion/presentation/tenant/TenantRegistrationPage.dart';
 import 'package:kostion/presentation/tenant/tenantHomePage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Future<FirebaseApp> _initializeFirebase() async {
+    FirebaseApp firebaseApp = await Firebase.initializeApp();
+    return firebaseApp;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FutureBuilder(
+        future: _initializeFirebase(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return LoginPageTenant();
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
+  }
+}
 
 class LoginPageTenant extends StatefulWidget {
   @override
@@ -10,7 +41,24 @@ class LoginPageTenant extends StatefulWidget {
 }
 
 class _LoginPageTenantState extends State<LoginPageTenant> {
-  UserType? selectedUserType;
+  static Future<User?> loginUsingEmailPassword(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      user = userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found") {}
+    }
+    return user;
+  }
+
+  TextEditingController cUser = TextEditingController();
+  TextEditingController cPass = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +83,7 @@ class _LoginPageTenantState extends State<LoginPageTenant> {
   }
 
   _header(context) {
-    return Column(
+    return const Column(
       children: [
         Text(
           'Selamat Datang Penghuni Kos!',
@@ -56,7 +104,7 @@ class _LoginPageTenantState extends State<LoginPageTenant> {
       children: [
         TextField(
           decoration: InputDecoration(
-              labelText: "Username",
+              labelText: "Email",
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
                   borderSide: BorderSide.none),
@@ -102,7 +150,7 @@ class _LoginPageTenantState extends State<LoginPageTenant> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ResetPasswordPage()),
+          MaterialPageRoute(builder: (context) => TenantResetPasswordPage()),
         );
       },
       child: const Text('Lupa Password?'),
@@ -118,7 +166,8 @@ class _LoginPageTenantState extends State<LoginPageTenant> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => RegistrationPage()),
+                MaterialPageRoute(
+                    builder: (context) => TenantRegistrationPage()),
               );
             },
             child: const Text('Daftar'))

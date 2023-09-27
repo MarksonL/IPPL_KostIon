@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:kostion/presentation/landingPage.dart';
+import 'package:kostion/presentation/tenant/landingPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {

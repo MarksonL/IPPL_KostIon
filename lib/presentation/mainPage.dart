@@ -16,8 +16,8 @@ class MainPage extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(right: 20, left: 15, top: 10),
-                child: Row(
+                padding: const EdgeInsets.only(right: 20, left: 15, top: 10),
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
@@ -37,7 +37,8 @@ class MainPage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 20), // Spasi antara header dan kotak-kotak baru
+              const SizedBox(
+                  height: 20), // Spasi antara header dan kotak-kotak baru
               InkWell(
                 onTap: () {
                   Navigator.push(
@@ -59,7 +60,7 @@ class MainPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
