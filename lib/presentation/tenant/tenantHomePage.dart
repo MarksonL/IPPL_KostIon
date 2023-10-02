@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kostion/presentation/kostSearchDelegate.dart';
 import 'package:kostion/data/model/kostData.dart';
 import 'package:kostion/presentation/tenant/TenantProfilPage.dart';
 
@@ -22,17 +21,7 @@ class _TenantHomePageState extends State<TenantHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Beranda Penghuni Kost'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => KostSearchDelegate()));
-            },
-          ),
-        ],
+        actions: [],
       ),
       body: Column(
         children: [

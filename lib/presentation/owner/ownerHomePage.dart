@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kostion/presentation/owner/OwnerKostSearchPage.dart';
 import 'package:kostion/presentation/owner/kostRegistrationPage.dart';
-import 'package:kostion/presentation/kostSearchDelegate.dart';
 import 'package:kostion/presentation/owner/OwnerProfilePage.dart';
 import 'package:kostion/data/model/kostData.dart';
-import 'package:kostion/presentation/kostSearchDelegate.dart';
 
 class OwnerHomePage extends StatefulWidget {
   @override
@@ -23,10 +22,10 @@ class _OwnerHomePageState extends State<OwnerHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Beranda Pemilik Kost'),
+        title: Text('Beranda Pemilik Kost'),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: Icon(Icons.add),
             onPressed: () {
               Navigator.push(
                 context,
@@ -57,18 +56,16 @@ class _OwnerHomePageState extends State<OwnerHomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Container(
-                            height: 200,
-                            width: double.infinity,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(15.0),
-                                topRight: Radius.circular(15.0),
-                              ),
-                              image: DecorationImage(
-                                image: AssetImage('assets/kost_image.jpg'),
-                                fit: BoxFit.cover,
-                              ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15.0),
+                              topRight: Radius.circular(15.0),
+                            ),
+                            child: Image.asset(
+                              'assets/kost_image.jpg',
+                              height: 200,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
                             ),
                           ),
                           Padding(
@@ -78,15 +75,15 @@ class _OwnerHomePageState extends State<OwnerHomePage> {
                               children: <Widget>[
                                 Text(
                                   kost.name,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: 5),
                                 Text(
                                   kost.location,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.grey,
                                   ),
@@ -121,9 +118,8 @@ class _OwnerHomePageState extends State<OwnerHomePage> {
         ],
         onTap: (int index) {
           if (index == 1) {
-            // Jika pengguna mengklik ikon profil (indeks 2)
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => KostSearchDelegate()),
+              MaterialPageRoute(builder: (context) => OwnerKostSearchPage()),
             );
           } else if (index == 2) {
             Navigator.of(context).push(

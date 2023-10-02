@@ -12,7 +12,12 @@
           "package_name": "com.example.kostion"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "309109681380-8fat71abshp7b5ugmboqkjnuvl69m8o7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCXlg2ejUl6a_taFrZ5q8ZYxKAjNW2s1Hc"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309109681380-8fat71abshp7b5ugmboqkjnuvl69m8o7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

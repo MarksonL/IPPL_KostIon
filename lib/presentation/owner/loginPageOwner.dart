@@ -78,7 +78,9 @@ class _LoginPageOwnerState extends State<LoginPageOwner> {
         ),
         SizedBox(height: 15),
         ElevatedButton(
-          onPressed: () {
+          onPressed: ()
+              // logikanya belum
+              {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => OwnerHomePage()),
