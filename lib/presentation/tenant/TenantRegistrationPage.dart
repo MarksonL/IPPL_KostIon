@@ -70,7 +70,7 @@ class TenantRegistrationPage extends StatelessWidget {
               ),
               const SizedBox(height: 20.0),
               const TextField(
-                controller: cUser,
+                // controller: cUser,
                 decoration: InputDecoration(
                   labelText: 'Email',
                 ),
@@ -86,7 +86,7 @@ class TenantRegistrationPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   String email = cUser.text;
-                  await signUp(email);
+                  // await signUp(email);
                   // Tambahkan logika pendaftaran di sini
                 },
                 child: const Text('Daftar'),

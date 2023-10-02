@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kostion/presentation/kostSearchDelegate.dart';
 import 'package:kostion/data/model/kostData.dart';
-import 'package:kostion/presentation/tenant/userProfil.dart';
+import 'package:kostion/presentation/tenant/TenantProfilPage.dart';
 
 class TenantHomePage extends StatefulWidget {
   @override
@@ -26,10 +26,10 @@ class _TenantHomePageState extends State<TenantHomePage> {
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              showSearch(
-                context: context,
-                delegate: KostSearchDelegate(),
-              );
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => KostSearchDelegate()));
             },
           ),
         ],
@@ -37,7 +37,7 @@ class _TenantHomePageState extends State<TenantHomePage> {
       body: Column(
         children: [
           // Header
-          Padding(
+          const Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Selamat Datang! Cari Kos Dengan Mudah',

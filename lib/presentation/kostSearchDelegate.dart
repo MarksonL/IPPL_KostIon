@@ -1,7 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:kostion/data/model/kostData.dart';
 
-class KostSearchDelegate extends SearchDelegate<String> {
+class KostSearchDelegate extends StatefulWidget {
+  @override
+  _KostSearchDelegateState createState() => _KostSearchDelegateState();
+}
+
+class _KostSearchDelegateState extends State<KostSearchDelegate> {
+  late SearchDelegate<String> searchDelegate;
+
+  @override
+  void initState() {
+    super.initState();
+    searchDelegate = _CustomSearchDelegate();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.search),
+      onPressed: () async {
+        final selected = await showSearch<String>(
+          context: context,
+          delegate: searchDelegate,
+        );
+        if (selected != null && selected != '') {
+          // Lakukan sesuatu dengan hasil pencarian (selected)
+          print('Hasil Pencarian: $selected');
+        }
+      },
+    );
+  }
+}
+
+class _CustomSearchDelegate extends SearchDelegate<String> {
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
