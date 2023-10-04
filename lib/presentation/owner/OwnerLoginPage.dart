@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart'; // Import Google Sign-In
 import 'package:kostion/data/model/userProfile.dart';
 import 'package:kostion/presentation/owner/OwnerRegistrationPage.dart';
 import 'OwnerResetPasswordPage.dart';
-import 'package:kostion/presentation/owner/ownerHomePage.dart';
+import 'package:kostion/presentation/owner/OwnerHomePage.dart';
 
 class LoginPageOwner extends StatefulWidget {
   @override
@@ -10,7 +11,18 @@ class LoginPageOwner extends StatefulWidget {
 }
 
 class _LoginPageOwnerState extends State<LoginPageOwner> {
-  UserType? selectedUserType;
+  GoogleSignInAccount? _currentUser;
+
+  Future<void> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  // Buat instance dari GoogleSignIn
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +40,7 @@ class _LoginPageOwnerState extends State<LoginPageOwner> {
                 _inputfield(context),
                 _forgotpassword(context),
                 _registrasi(context),
+                _googleSignInButton(), // Tambahkan tombol login Google
               ]),
         ),
       ),
@@ -127,5 +140,41 @@ class _LoginPageOwnerState extends State<LoginPageOwner> {
             child: const Text('Daftar'))
       ],
     );
+  }
+
+  // Tambahkan method untuk menampilkan tombol login Google
+  Widget _googleSignInButton() {
+    return ElevatedButton(
+      onPressed: _handleGoogleSignIn, // Panggil method _handleGoogleSignIn
+      child: Text(
+        'Login dengan Google',
+        style: TextStyle(fontSize: 20),
+      ),
+      style: ElevatedButton.styleFrom(
+        shape: const StadiumBorder(),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+      ),
+    );
+  }
+
+  // Tambahkan method untuk menangani login dengan Google
+  void _handleGoogleSignIn() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        // Login berhasil, Anda dapat menavigasi ke halaman yang sesuai di sini
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => OwnerHomePage()),
+        );
+      } else {
+        // Login dibatalkan atau gagal
+        // Handle kesalahan atau tindakan yang sesuai
+      }
+    } catch (error) {
+      // Handle kesalahan login Google
+      print(error.toString());
+    }
   }
 }

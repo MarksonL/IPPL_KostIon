@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kostion/presentation/admin/adminHomePage.dart';
 import 'package:kostion/presentation/mainPage.dart';
-import 'package:kostion/presentation/owner/ownerHomePage.dart';
+import 'package:kostion/presentation/owner/OwnerHomePage.dart';
 import 'package:kostion/presentation/tenant/tenantHomePage.dart';
 
 class LandingPage extends StatelessWidget {

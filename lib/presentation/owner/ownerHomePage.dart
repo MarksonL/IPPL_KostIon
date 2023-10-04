@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kostion/presentation/owner/OwnerKostSearchPage.dart';
-import 'package:kostion/presentation/owner/kostRegistrationPage.dart';
+import 'package:kostion/presentation/owner/OwnerkostRegistrationPage.dart';
 import 'package:kostion/presentation/owner/OwnerProfilePage.dart';
 import 'package:kostion/data/model/kostData.dart';
 

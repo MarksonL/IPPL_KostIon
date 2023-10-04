@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kostion/presentation/owner/loginPageOwner.dart';
+import 'package:kostion/presentation/owner/OwnerLoginPage.dart';
 import 'package:kostion/presentation/tenant/loginPageTenant.dart';
 
 class MainPage extends StatelessWidget {
