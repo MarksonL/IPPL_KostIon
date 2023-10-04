@@ -91,8 +91,8 @@ class _LoginPageOwnerState extends State<LoginPageOwner> {
             style: TextStyle(fontSize: 20),
           ),
           style: ElevatedButton.styleFrom(
-            shape: StadiumBorder(),
-            padding: EdgeInsets.symmetric(vertical: 16),
+            shape: const StadiumBorder(),
+            padding: const EdgeInsets.symmetric(vertical: 16),
           ),
         )
       ],
