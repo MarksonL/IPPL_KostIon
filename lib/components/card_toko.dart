@@ -5,27 +5,23 @@ import 'package:kostlon/screen/member/kost/kost_detail.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class CardToko extends StatelessWidget {
-  CardToko({
-    required this.title,
-    required this.image,
-    required this.alamat,
-    required this.harga,
-  });
+  CardToko(
+      {required this.title,
+      required this.image,
+      required this.alamat,
+      required this.harga,
+      required this.onDetail});
 
   String title;
   String image;
   String alamat;
   String harga;
+  Function onDetail;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MemberKostDetail()),
-        );
-      },
+      onTap: () => onDetail(context),
       child: Padding(
         padding: const EdgeInsets.only(top: 10),
         child: Card(

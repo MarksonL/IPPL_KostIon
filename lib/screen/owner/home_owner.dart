@@ -55,6 +55,12 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
       body: SafeArea(
         child: _widgetOptions[_selectedIndex],
       ),
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.add),
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

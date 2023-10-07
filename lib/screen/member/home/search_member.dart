@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:kostlon/components/card_toko.dart';
 import 'package:kostlon/data/dummy_kost.dart';
+import 'package:kostlon/screen/member/kost/kost_detail.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class SearchScreenMember extends StatefulWidget {
@@ -52,6 +53,12 @@ class _SearchScreenMemberState extends State<SearchScreenMember> {
                 image: listKost[index]['image'],
                 alamat: listKost[index]['alamat'],
                 harga: listKost[index]['harga'],
+                onDetail: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MemberKostDetail()),
+                  );
+                },
               );
             },
             shrinkWrap: true,
