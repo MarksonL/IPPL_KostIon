@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "309109681380",
-    "project_id": "kostion-da4af",
-    "storage_bucket": "kostion-da4af.appspot.com"
+    "project_number": "140757588529",
+    "project_id": "kostlon",
+    "storage_bucket": "kostlon.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:309109681380:android:48c552e4487e677eac90f1",
+        "mobilesdk_app_id": "1:140757588529:android:16456bc15d585c0758d310",
         "android_client_info": {
-          "package_name": "com.example.kostion"
+          "package_name": "com.example.kostlon"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "309109681380-8fat71abshp7b5ugmboqkjnuvl69m8o7.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCXlg2ejUl6a_taFrZ5q8ZYxKAjNW2s1Hc"
+          "current_key": "AIzaSyBxN8h9PuR7FZsLArIWX2SSmPJ2gh1WqV4"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "309109681380-8fat71abshp7b5ugmboqkjnuvl69m8o7.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
