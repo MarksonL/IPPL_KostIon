@@ -7,6 +7,8 @@ import 'package:kostlon/screen/owner/home/home_owner.dart';
 import 'package:kostlon/screen/owner/home/payment_owner.dart';
 import 'package:kostlon/screen/owner/home/profile_owner.dart';
 import 'package:kostlon/screen/owner/home/rules_owner.dart';
+import 'package:kostlon/screen/owner/kos/kos_form.dart';
+import 'package:kostlon/screen/owner/rule/rule_form.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class HomeOwnerPage extends StatefulWidget {
@@ -55,9 +57,23 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
       body: SafeArea(
         child: _widgetOptions[_selectedIndex],
       ),
-      floatingActionButton: _selectedIndex == 0
+      floatingActionButton: _selectedIndex != 3
           ? FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                switch (_selectedIndex) {
+                  case 0:
+                    print('home');
+                  case 1:
+                    print('pembayaran');
+                  case 2:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OwnerRuleFormPage()),
+                    );
+                  default:
+                }
+              },
               child: Icon(Icons.add),
             )
           : null,

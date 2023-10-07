@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/components/card_toko.dart';
+import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class HomeOwnerScreen extends StatefulWidget {
@@ -12,7 +13,7 @@ class HomeOwnerScreen extends StatefulWidget {
 }
 
 class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
-  final db = FirebaseFirestore.instance;
+  final KosServices kosServices = KosServices();
   final TextEditingController _search = TextEditingController();
 
   @override
@@ -21,8 +22,8 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
       onRefresh: () async {
         await Future.delayed(Duration(seconds: 2));
       },
-      child: StreamBuilder(
-        stream: db.collection('kos').snapshots(),
+      child: StreamBuilder<QuerySnapshot>(
+        stream: kosServices.getData(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
@@ -34,7 +35,6 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
               child: Text('Data kos kosong'),
             );
           }
-
           return ListView(
             children: [
               SizedBox(
@@ -50,7 +50,7 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
                       childAspectRatio: 3 / 3.5,
                       crossAxisSpacing: 0,
                       mainAxisSpacing: 0),
-                  itemCount: items?.length,
+                  itemCount: items.length,
                   itemBuilder: (context, index) {
                     return CardToko(
                       title: items[index]['name'],
@@ -62,7 +62,6 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
                         //   context,
                         //   MaterialPageRoute(builder: (context) => MemberKostDetail()),
                         // );
-                        print('detail');
                       },
                     );
                   },
