@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kostlon/screen/start_profile.dart';
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -9,45 +9,49 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final User? user = FirebaseAuth.instance.currentUser;
 
-  String _selectedRole = 'member'; // Default role adalah 'member'
-
-  void _handleRoleChange(String? value) {
-    setState(() {
-      if (value != null) {
-        _selectedRole = value;
-      }
-    });
-  }
-
-  void _registerUser() async {
+  Future<void> _registerUser() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Lakukan pendaftaran pengguna ke Firebase dengan email dan password, dan simpan nama dan role
-        // Contoh menggunakan Firebase Authentication
-        User? user =
-            (await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
-        ))
-                .user;
-        // Simpan informasi tambahan pengguna ke Firestore atau Realtime Database sesuai kebutuhan
-        // Anda dapat menggunakan Firebase Firestore untuk ini
-        if (user != null) {
-          FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-            'name': _nameController.text,
-            'role': _selectedRole,
-          });
-        }
-
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
         // Registrasi sukses, lanjutkan ke halaman berikutnya atau tampilkan pesan sukses
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => StartProfilePage()));
+      } on FirebaseAuthException catch (e) {
+        // Tangani pengecualian Firebase Authentication
+        if (e.code == 'email-already-in-use') {
+          // Email sudah terdaftar, tampilkan pemberitahuan kepada pengguna
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Akun sudah ada'),
+                content: Text(
+                    'Email ini sudah terdaftar. Silakan gunakan email lain atau masuk dengan email ini.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Tutup'),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          // Penanganan kesalahan lainnya
+          print('Kesalahan saat mendaftar: ${e.message}');
+        }
       } catch (e) {
-        // Penanganan kesalahan
-        print("Kesalahan saat mendaftar: $e");
+        // Penanganan kesalahan lainnya
+        print('Kesalahan saat mendaftar: $e');
       }
     }
   }
@@ -65,40 +69,30 @@ class _RegistrationPageState extends State<RegistrationPage> {
           child: Column(
             children: [
               TextFormField(
-                controller: _nameController,
+                controller: _emailController,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Nama tidak boleh kosong';
+                    return 'Email tidak boleh kosong';
                   }
                   return null;
                 },
-                decoration: InputDecoration(labelText: 'Nama'),
+                decoration: InputDecoration(labelText: 'Email'),
               ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  Radio(
-                    value: 'member',
-                    groupValue: _selectedRole,
-                    onChanged: _handleRoleChange,
-                  ),
-                  Text('Member'),
-                  Radio(
-                    value: 'owner',
-                    groupValue: _selectedRole,
-                    onChanged: _handleRoleChange,
-                  ),
-                  Text('Owner'),
-                ],
+              TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Password tidak boleh kosong';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(labelText: 'Password'),
               ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _registerUser,
-                  child: Text('Daftar'),
-                ),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: _registerUser,
+                child: Text('Daftar'),
               ),
             ],
           ),
