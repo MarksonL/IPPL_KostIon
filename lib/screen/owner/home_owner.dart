@@ -38,7 +38,7 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Kostln (Owner)"),
+        title: Text("Kostlon"),
         centerTitle: true,
         elevation: 0,
         actions: [

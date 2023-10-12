@@ -1,18 +1,18 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kostlon/screen/member/home_member.dart';
 import 'package:kostlon/screen/owner/home_owner.dart';
+import 'package:kostlon/screen/register.dart'; // Import halaman pendaftaran
 import 'package:kostlon/utils/color_theme.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -125,7 +125,38 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-              )
+              ),
+              SizedBox(height: 10),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Navigasi ke halaman pendaftaran
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RegistrationPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    elevation: 0,
+                    backgroundColor: AppColor.secondary,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                  ),
+                  child: Text(
+                    'Daftar',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -135,12 +166,13 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class TextInput extends StatelessWidget {
-  const TextInput(
-      {super.key,
-      required this.label,
-      required TextEditingController val,
-      required this.isPassword})
-      : _val = val;
+  const TextInput({
+    Key? key,
+    required this.label,
+    required TextEditingController val,
+    required this.isPassword,
+  })  : _val = val,
+        super(key: key);
 
   final String label;
   final TextEditingController _val;
