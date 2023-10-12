@@ -20,13 +20,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
-        // Registrasi sukses, lanjutkan ke halaman berikutnya atau tampilkan pesan sukses
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => StartProfilePage()));
       } on FirebaseAuthException catch (e) {
-        // Tangani pengecualian Firebase Authentication
         if (e.code == 'email-already-in-use') {
-          // Email sudah terdaftar, tampilkan pemberitahuan kepada pengguna
           showDialog(
             context: context,
             builder: (context) {

@@ -1,6 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kostlon/screen/member/home_member.dart';
+import 'package:kostlon/screen/owner/home_owner.dart';
 
 class StartProfilePage extends StatefulWidget {
   @override
@@ -20,6 +22,33 @@ class _StartProfilePageState extends State<StartProfilePage> {
   }
 
   Future<void> _submitProfile() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Konfirmasi'),
+          content: Text('Apakah Anda ingin menyimpan profil?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Tutup dialog konfirmasi
+                _saveProfile();
+              },
+              child: Text('Ya'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Tutup dialog konfirmasi
+              },
+              child: Text('Tidak'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _saveProfile() async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
@@ -28,7 +57,35 @@ class _StartProfilePageState extends State<StartProfilePage> {
 
         final userRef = FirebaseFirestore.instance.collection("users");
         await userRef.doc(uid).set({'name': name, 'role': _selectedRole});
-        print("user id: $uid");
+
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Profil Berhasil Disimpan'),
+              content: Text('Profil Anda telah berhasil disimpan.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Tutup dialog sukses
+                    if (_selectedRole == 'member') {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeMemberPage()));
+                    } else if (_selectedRole == 'owner') {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeOwnerPage()));
+                    }
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       }
     } catch (e) {
       print('Kesalahan: $e');
@@ -39,7 +96,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profil Awal'),
+        title: Text('Atur Profil'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

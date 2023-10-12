@@ -17,7 +17,6 @@ class _ProfileOwnerScreenState extends State<ProfileOwnerScreen> {
   User? user = FirebaseAuth.instance.currentUser;
 
   Future<void> _updateName(BuildContext context) {
-    print("show update name");
     return showDialog(
         context: context,
         builder: (context) {

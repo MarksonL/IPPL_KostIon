@@ -1,10 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kostlon/screen/member/home_member.dart';
 import 'package:kostlon/screen/owner/home_owner.dart';
-import 'package:kostlon/screen/register.dart'; // Import halaman pendaftaran
+import 'package:kostlon/screen/register.dart';
+import 'package:kostlon/screen/resetpassword.dart';
 import 'package:kostlon/utils/color_theme.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
@@ -34,12 +35,13 @@ class _LoginPageState extends State<LoginPage> {
     } on FirebaseAuthException catch (e) {
       context.loaderOverlay.hide();
       showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("Kredensial tidak ditemukan"),
-            );
-          });
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Kredensial tidak ditemukan"),
+          );
+        },
+      );
     }
   }
 
@@ -117,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: AppColor.primary,
                     padding: const EdgeInsets.symmetric(vertical: 20),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Masuk',
                     style: TextStyle(
                       color: Colors.white,
@@ -133,11 +135,11 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Navigasi ke halaman pendaftaran
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => RegistrationPage()),
+                        builder: (context) => RegistrationPage(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -148,8 +150,39 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: AppColor.secondary,
                     padding: const EdgeInsets.symmetric(vertical: 20),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Daftar',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResetPasswordPage(),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    elevation: 0,
+                    backgroundColor: AppColor.primary,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                  ),
+                  child: const Text(
+                    'Lupa Password?',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
