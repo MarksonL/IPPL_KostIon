@@ -129,7 +129,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                   elevation: 0,
                   backgroundColor: AppColor.primary,
-                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 100),
                 ),
                 child: Text('Daftar'),
                 // style: ElevatedButton.styleFrom(

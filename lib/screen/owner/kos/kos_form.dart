@@ -15,7 +15,7 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
   final TextEditingController _namaController = TextEditingController();
   final TextEditingController _alamatController = TextEditingController();
   final TextEditingController _hargaController = TextEditingController();
-  late XFile? _selectedImage;
+  XFile? _selectedImage; // Inisialisasi _selectedImage dengan null
 
   Future<void> _getImage() async {
     final picker = ImagePicker();
@@ -24,6 +24,13 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
     setState(() {
       _selectedImage = pickedImage;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedImage =
+        null; // Inisialisasi _selectedImage dengan null dalam initState
   }
 
   @override

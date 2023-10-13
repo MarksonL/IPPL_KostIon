@@ -52,7 +52,7 @@ class _OwnerRuleFormPageState extends State<OwnerRuleFormPage> {
                       context.loaderOverlay.hide();
                     }
                   },
-                  child: Text('simpan')),
+                  child: Text('Simpan')),
             ],
           ),
         ),

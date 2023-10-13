@@ -62,7 +62,11 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
               onPressed: () {
                 switch (_selectedIndex) {
                   case 0:
-                    print('home');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OwnerKostFormPage()),
+                    );
                   case 1:
                     print('pembayaran');
                   case 2:
