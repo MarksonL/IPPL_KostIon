@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kostlon/screen/member/home_member.dart';
 import 'package:kostlon/screen/owner/home_owner.dart';
+import 'package:kostlon/utils/color_theme.dart';
 
 class StartProfilePage extends StatefulWidget {
   @override
@@ -97,6 +98,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Atur Profil'),
+        backgroundColor: AppColor.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -113,29 +115,68 @@ class _StartProfilePageState extends State<StartProfilePage> {
             SizedBox(height: 20),
             TextFormField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Nama Pengguna'),
+              decoration: InputDecoration(
+                  labelText: 'Nama Pengguna',
+                  filled: true,
+                  fillColor: Colors.white,
+                  labelStyle: TextStyle(color: AppColor.secondary),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: AppColor.primary),
+                  )),
             ),
             SizedBox(height: 20),
-            Text('Pilih Peran:'),
+            Text(
+              'Pilih Peran:',
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+            SizedBox(height: 10),
             Row(
               children: [
                 Radio(
                   value: 'member',
                   groupValue: _selectedRole,
                   onChanged: _handleRoleChange,
+                  activeColor: AppColor.primary,
                 ),
-                Text('Member'),
+                Text(
+                  'Member',
+                  style: TextStyle(fontSize: 12, color: Colors.black),
+                ),
+                SizedBox(width: 20),
                 Radio(
                   value: 'owner',
                   groupValue: _selectedRole,
                   onChanged: _handleRoleChange,
+                  activeColor: AppColor.primary,
                 ),
-                Text('Owner'),
+                Text(
+                  'Owner',
+                  style: TextStyle(fontSize: 12, color: Colors.black),
+                ),
               ],
             ),
             SizedBox(height: 20),
+            // Flexible(
+            //   flex: 1, // Proporsi fleksibilitas, bisa disesuaikan
+            //   child: Container(), // Spacer untuk memberi ruang kosong
+            // ),
+            // Expanded(
+            //   child: Container(), // Spacer untuk membuat tombol di tengah
+            // ),
             ElevatedButton(
               onPressed: _submitProfile,
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                elevation: 0,
+                backgroundColor: AppColor.primary,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+              ),
               child: Text('Simpan Profil'),
             ),
           ],
