@@ -15,6 +15,7 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
   final TextEditingController _namaController = TextEditingController();
   final TextEditingController _alamatController = TextEditingController();
   final TextEditingController _hargaController = TextEditingController();
+  int _jumlahKamar = 1; // Default jumlah kamar
   XFile? _selectedImage; // Inisialisasi _selectedImage dengan null
 
   Future<void> _getImage() async {
@@ -78,8 +79,47 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
               decoration: InputDecoration(labelText: 'Harga (per bulan)'),
             ),
             SizedBox(height: 20),
+            Text(
+              'Jumlah Kamar',
+              style: TextStyle(fontSize: 15),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.remove),
+                  onPressed: () {
+                    setState(() {
+                      if (_jumlahKamar > 1) {
+                        _jumlahKamar--;
+                      }
+                    });
+                  },
+                ),
+                Text(
+                  '$_jumlahKamar',
+                  style: TextStyle(fontSize: 18),
+                ),
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    setState(() {
+                      _jumlahKamar++;
+                    });
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                String namaKos = _namaController.text;
+                String alamat = _alamatController.text;
+                String harga = _hargaController.text;
+
+                // Logika untuk menyimpan data kos ke database
+                // Panggil fungsi atau service yang sesuai untuk menyimpan data
+                // rulesServices.simpanDataKos(namaKos, alamat, harga, _jumlahKamar);
                 // Logika untuk menyimpan data kos ke database
               },
               child: Text('Simpan'),
