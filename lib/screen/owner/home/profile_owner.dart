@@ -27,7 +27,7 @@ class _ProfileOwnerScreenState extends State<ProfileOwnerScreen> {
             ),
             content: TextField(
               controller: _nameInput,
-              decoration: InputDecoration(hintText: "Text Field in Dialog"),
+              decoration: InputDecoration(hintText: "Nama Baru"),
             ),
             actions: <Widget>[
               TextButton(
