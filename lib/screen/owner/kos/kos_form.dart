@@ -56,7 +56,7 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
                       alignment: Alignment.center,
                     )
                   : Image.file(
-                      _selectedImage!.path as File,
+                      File(_selectedImage!.path),
                       width: 200,
                       height: 200,
                       fit: BoxFit.cover,
