@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kostlon/services/kos_services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:kostlon/services/kos_services.dart';
 
 class OwnerKostFormPage extends StatefulWidget {
   const OwnerKostFormPage({super.key});
@@ -11,10 +14,10 @@ class OwnerKostFormPage extends StatefulWidget {
 }
 
 class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
-  final KosServices rulesServices = KosServices();
   final TextEditingController _namaController = TextEditingController();
   final TextEditingController _alamatController = TextEditingController();
   final TextEditingController _hargaController = TextEditingController();
+  final KosServices kosServices = KosServices();
   int _jumlahKamar = 1; // Default jumlah kamar
   XFile? _selectedImage; // Inisialisasi _selectedImage dengan null
 
@@ -24,6 +27,41 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
 
     setState(() {
       _selectedImage = pickedImage;
+    });
+  }
+
+  void submit(BuildContext context) async {
+    // ambil data user yang sedang login
+    User? owner = FirebaseAuth.instance.currentUser;
+    //
+    Map<String, dynamic> body = {
+      "name": _namaController.text,
+      "owner": owner?.displayName,
+      "owner_id": owner?.uid,
+      "price": int.parse(_hargaController.text),
+      "alamat": _alamatController.text,
+      "publish": true,
+      "jumlah": _jumlahKamar,
+      "created": Timestamp.now()
+    };
+    try {
+      await kosServices.addData(body);
+      // action setelah data berhasil di tambahkan
+      reset();
+      // navigasi ke halaman utama
+      Navigator.pop(context);
+      print('sucess');
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void reset() {
+    setState(() {
+      _namaController.clear();
+      _hargaController.clear();
+      _alamatController.clear();
+      _jumlahKamar = 1;
     });
   }
 
@@ -112,16 +150,7 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                String namaKos = _namaController.text;
-                String alamat = _alamatController.text;
-                String harga = _hargaController.text;
-
-                // Logika untuk menyimpan data kos ke database
-                // Panggil fungsi atau service yang sesuai untuk menyimpan data
-                // rulesServices.simpanDataKos(namaKos, alamat, harga, _jumlahKamar);
-                // Logika untuk menyimpan data kos ke database
-              },
+              onPressed: () => submit(context),
               child: Text('Simpan'),
             ),
           ],

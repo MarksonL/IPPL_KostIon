@@ -14,34 +14,14 @@ class KosServices {
     return dataStream;
   }
 
-  // CREATE: tambah data kos
-  Future<void> addData(Map<String, dynamic> body, File? imageFile) async {
-    if (imageFile != null) {
-      try {
-        // Generate unique filename for the image
-        String imageName = DateTime.now().millisecondsSinceEpoch.toString();
-
-        // Upload the image to Firebase Storage
-        final storageRef = storage.ref().child('kos_images/$imageName.jpg');
-        final uploadTask = storageRef.putFile(imageFile);
-
-        // Wait for the upload task to complete
-        await uploadTask.whenComplete(() async {
-          // Get the download URL for the uploaded image
-          final imageUrl = await storageRef.getDownloadURL();
-
-          // Add the image URL to the data
-          body['image_url'] = imageUrl;
-
-          // Add the data to Firestore
-          await db.add(body);
-        });
-      } catch (e) {
-        print('Error uploading image and adding data: $e');
-      }
-    } else {
-      // If no image is provided, add the data without an image
-      await db.add(body);
-    }
+  // CREATE: tambah data kos { "asdasd": string, int dlll }
+  Future<void> addData(Map<String, dynamic> body) {
+    // hit save image
+    // simpan data
+    return db.add(body);
   }
+  //  Object storage
+  // Future<void> saveimage() {
+
+  // }
 }
