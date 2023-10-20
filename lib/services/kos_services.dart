@@ -17,11 +17,17 @@ class KosServices {
   // CREATE: tambah data kos { "asdasd": string, int dlll }
   Future<void> addData(Map<String, dynamic> body) {
     // hit save image
-    // simpan data
+    // simpan dataß
     return db.add(body);
   }
-  //  Object storage
-  // Future<void> saveimage() {
 
-  // }
+  // READ: ambil data kos
+  Stream<DocumentSnapshot<Object?>> getDetail(String id) {
+    final dataStream = db.doc(id).snapshots();
+    return dataStream;
+  }
+
+  Stream<QuerySnapshot> fasilitas(String id) {
+    return db.doc(id).collection('fasilitas').snapshots();
+  }
 }

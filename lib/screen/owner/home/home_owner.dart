@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/components/card_toko.dart';
+import 'package:kostlon/screen/owner/kos/kos_detail.dart';
 import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
@@ -23,55 +24,62 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
         await Future.delayed(Duration(seconds: 2));
       },
       child: StreamBuilder<QuerySnapshot>(
-        stream: kosServices.getData(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          var items = snapshot.data?.docs;
+          stream: kosServices.getData(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            var items = snapshot.data?.docs;
 
-          if (items == null) {
+            if (items!.isNotEmpty) {
+              return ListView(
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextInput(label: "Cari", val: _search),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            childAspectRatio: 3 / 3.5,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0),
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              final String? id = items[index]?.id;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      OwnerKosDetailPage(id: id),
+                                ),
+                              );
+                            },
+                            child: CardToko(
+                              onDetail: () {
+                                // Handle onDetail logic here, if applicable
+                              },
+                              title: items[index]['name'],
+                              image: items[index]['image'],
+                              alamat: items[index]['alamat'],
+                              harga: items[index]['price'].toString(),
+                            ),
+                          );
+                        },
+                        shrinkWrap: true,
+                      )),
+                ],
+              );
+            }
             return Center(
-              child: Text('Data kos kosong'),
+              child: Text('Data kos kosong, tambah data'),
             );
-          }
-          return ListView(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              TextInput(label: "Cari", val: _search),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: 3 / 3.5,
-                      crossAxisSpacing: 0,
-                      mainAxisSpacing: 0),
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return CardToko(
-                      title: items[index]['name'],
-                      image: items[index]['image'],
-                      alamat: items[index]['owner'],
-                      harga: items[index]['price'].toString(),
-                      onDetail: (context) {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => MemberKostDetail()),
-                        // );
-                      },
-                    );
-                  },
-                  shrinkWrap: true,
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+          }),
     );
   }
 }
