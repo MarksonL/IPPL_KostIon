@@ -27,7 +27,11 @@ class KosServices {
 
   // READ: list fasilitas
   Stream<QuerySnapshot> fasilitas(String id) {
-    return db.doc(id).collection('fasilitas').snapshots();
+    return db
+        .doc(id)
+        .collection('fasilitas')
+        .orderBy('created', descending: true)
+        .snapshots();
   }
 
   // ADD: tambah fasilitas

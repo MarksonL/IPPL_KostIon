@@ -4,6 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/services/kos_services.dart';
 
+import 'components/fasilitas_builder.dart';
+import 'components/list_text.dart';
+
 class OwnerKosDetailPage extends StatefulWidget {
   const OwnerKosDetailPage({
     super.key,
@@ -18,6 +21,7 @@ class OwnerKosDetailPage extends StatefulWidget {
 
 class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
   KosServices kosServices = KosServices();
+  TextEditingController _inputFasilitas = TextEditingController();
   late DocumentSnapshot<Map<String, dynamic>> data;
 
   @override
@@ -65,8 +69,19 @@ class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
                     Container(
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      color: Colors.grey[200],
                       child: Row(
-                        children: [Text('Tambah data')],
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () => _addfasilitas(context),
+                            child: Text('Tambah Fasilitas'),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text('Tambah pengaturan'),
+                          )
+                        ],
                       ),
                     ),
                     ExpansionTile(
@@ -96,79 +111,36 @@ class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
       ),
     );
   }
-}
 
-class FasilitasBuilder extends StatelessWidget {
-  const FasilitasBuilder({
-    super.key,
-    required this.kosServices,
-    required this.widget,
-  });
-
-  final KosServices kosServices;
-  final OwnerKosDetailPage widget;
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: kosServices.fasilitas(widget.id),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final items = snapshot.data?.docs;
-          return ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: items!.length,
-            itemBuilder: (context, index) {
-              QueryDocumentSnapshot item = items[index];
-
-              return ListTile(
-                title: Text('${item['name']}'),
-              );
-            },
-          );
-        }
-
-        return Container(
-          child: Center(
-            child: Text('Data kosong'),
+  Future<void> _addfasilitas(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Tambah fasilitas'),
+          content: TextField(
+            controller: _inputFasilitas,
+            decoration: InputDecoration(hintText: "Nama fasilitas"),
           ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Batal')),
+            TextButton(
+                onPressed: () {
+                  kosServices.addFasilitas({
+                    'name': _inputFasilitas.text,
+                    "created": Timestamp.now()
+                  }, widget.id);
+                  Navigator.pop(context);
+                  _inputFasilitas.clear();
+                },
+                child: Text('Simpan')),
+          ],
         );
       },
-    );
-  }
-}
-
-class ListText extends StatelessWidget {
-  const ListText({
-    super.key,
-    required this.label,
-    required this.content,
-  });
-
-  final String label;
-  final String content;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(fontSize: 14, color: Colors.grey),
-          ),
-          SizedBox(height: 5),
-          Text(
-            content,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
     );
   }
 }
