@@ -25,7 +25,13 @@ class KosServices {
     return dataStream;
   }
 
+  // READ: list fasilitas
   Stream<QuerySnapshot> fasilitas(String id) {
     return db.doc(id).collection('fasilitas').snapshots();
+  }
+
+  // ADD: tambah fasilitas
+  Future<void> addFasilitas(Map<String, dynamic> body, String kosId) {
+    return db.doc(kosId).collection('fasilitas').add(body);
   }
 }
