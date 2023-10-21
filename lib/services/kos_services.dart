@@ -39,6 +39,10 @@ class KosServices {
     return db.doc(kosId).collection('fasilitas').add(body);
   }
 
+  Future<void> deleteFasilitas(String kosId, String id) {
+    return db.doc(kosId).collection('fasilitas').doc(id).delete();
+  }
+
   // READ: list peraturan
   Stream<QuerySnapshot> peraturan(String id) {
     return db
@@ -46,5 +50,14 @@ class KosServices {
         .collection('peraturan')
         .orderBy('created', descending: true)
         .snapshots();
+  }
+
+  // ADD: tambah peraturan
+  Future<void> addPeraturan(Map<String, dynamic> body, String kosId) {
+    return db.doc(kosId).collection('peraturan').add(body);
+  }
+
+  Future<void> deletePeraturan(String kosId, String id) {
+    return db.doc(kosId).collection('peraturan').doc(id).delete();
   }
 }

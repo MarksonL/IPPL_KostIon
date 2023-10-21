@@ -29,6 +29,11 @@ class FasilitasBuilder extends StatelessWidget {
 
               return ListTile(
                 title: Text('${item['name']}'),
+                trailing: IconButton(
+                    onPressed: () {
+                      kosServices.deleteFasilitas(widget.id, item.id);
+                    },
+                    icon: Icon(Icons.delete)),
               );
             },
           );

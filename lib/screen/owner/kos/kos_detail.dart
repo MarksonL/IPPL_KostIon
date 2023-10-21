@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kostlon/screen/owner/kos/components/peraturan_builder.dart';
 import 'package:kostlon/services/kos_services.dart';
 
 import 'components/fasilitas_builder.dart';
@@ -22,6 +23,7 @@ class OwnerKosDetailPage extends StatefulWidget {
 class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
   KosServices kosServices = KosServices();
   TextEditingController _inputFasilitas = TextEditingController();
+  TextEditingController _inputPeraturan = TextEditingController();
   late DocumentSnapshot<Map<String, dynamic>> data;
 
   @override
@@ -78,7 +80,7 @@ class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
                             child: Text('Tambah Fasilitas'),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () => _addperaturan(context),
                             child: Text('Tambah pengaturan'),
                           )
                         ],
@@ -94,7 +96,7 @@ class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
                     ExpansionTile(
                       title: Text('Peraturan'),
                       children: [
-                        FasilitasBuilder(
+                        PeraturanBuilder(
                             kosServices: kosServices, widget: widget)
                       ],
                     ),
@@ -132,6 +134,38 @@ class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
                 onPressed: () {
                   kosServices.addFasilitas({
                     'name': _inputFasilitas.text,
+                    "created": Timestamp.now()
+                  }, widget.id);
+                  Navigator.pop(context);
+                  _inputFasilitas.clear();
+                },
+                child: Text('Simpan')),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _addperaturan(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Tambah peraturan'),
+          content: TextField(
+            controller: _inputPeraturan,
+            decoration: InputDecoration(hintText: "Nama peraturan"),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Batal')),
+            TextButton(
+                onPressed: () {
+                  kosServices.addPeraturan({
+                    'name': _inputPeraturan.text,
                     "created": Timestamp.now()
                   }, widget.id);
                   Navigator.pop(context);

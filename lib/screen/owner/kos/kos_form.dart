@@ -39,12 +39,15 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
     if (_selectedImage != null) {
       final fileRef = storageRef.child('kos/${_selectedImage!.name}');
       final File file = File(_selectedImage!.path);
+      // TODO: loader mulai
       try {
         final resp = await fileRef.putFile(file);
         final url = await fileRef.getDownloadURL();
         storeData(context, url.toString());
         debugPrint(url.toString());
+        //TODO: loader selesai
       } catch (e) {
+        // TODO: loader SELESAI
         debugPrint('terjadi kesalahan');
       }
     }
@@ -65,13 +68,17 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
       "jumlah": _jumlahKamar,
       "created": Timestamp.now()
     };
+
+    // TODO: loader mulai
     try {
       await kosServices.addData(body);
       // action setelah data berhasil di tambahkan
       reset();
       // navigasi ke halaman utama
       Navigator.pop(context);
+      // TODO: loader SELESAI
     } catch (e) {
+      // TODO: loader SELESAI
       debugPrint(e.toString());
     }
   }
