@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kostlon/screen/member/kost/form_sewa.dart';
 import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
@@ -57,7 +58,10 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
           },
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PengajuanSewaForm()));
+          },
           label: Text("Ajukan Sewa"),
           backgroundColor: AppColor.primary,
         ),
