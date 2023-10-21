@@ -8,10 +8,25 @@ class PengajuanSewaForm extends StatefulWidget {
 
 class _PengajuanSewaFormState extends State<PengajuanSewaForm> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController profesiController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController startDateController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != DateTime.now()) {
+      setState(() {
+        startDateController.text = picked.toString();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +39,8 @@ class _PengajuanSewaFormState extends State<PengajuanSewaForm> {
       body: Theme(
         data: ThemeData(
           primaryColor: AppColor.primary,
-          colorScheme: ColorScheme.fromSwatch()
-              .copyWith(secondary: AppColor.primary), // Set accent color
+          colorScheme:
+              ColorScheme.fromSwatch().copyWith(secondary: AppColor.primary),
         ),
         child: Center(
           child: Padding(
@@ -33,8 +48,7 @@ class _PengajuanSewaFormState extends State<PengajuanSewaForm> {
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.center, // Center the form vertically
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   TextFormField(
                     controller: nameController,
@@ -47,11 +61,11 @@ class _PengajuanSewaFormState extends State<PengajuanSewaForm> {
                     },
                   ),
                   TextFormField(
-                    controller: emailController,
-                    decoration: InputDecoration(labelText: "Email"),
+                    controller: profesiController,
+                    decoration: InputDecoration(labelText: "Profesi anda"),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Mohon masukkan email anda";
+                        return "Mohon masukkan profesi anda";
                       }
                       return null;
                     },
@@ -62,6 +76,20 @@ class _PengajuanSewaFormState extends State<PengajuanSewaForm> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Mohon masukkan nomor telepon anda";
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: startDateController,
+                    decoration: InputDecoration(labelText: "Tanggal Awal Sewa"),
+                    onTap: () {
+                      _selectDate(
+                          context); // Memanggil fungsi _selectDate saat bidang tanggal diklik
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Mohon pilih tanggal awal sewa";
                       }
                       return null;
                     },

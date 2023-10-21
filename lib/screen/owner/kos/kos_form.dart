@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:loader_overlay/loader_overlay.dart';
 
 import 'package:kostlon/services/kos_services.dart';
 
@@ -39,15 +40,15 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
     if (_selectedImage != null) {
       final fileRef = storageRef.child('kos/${_selectedImage!.name}');
       final File file = File(_selectedImage!.path);
-      // TODO: loader mulai
+      context.loaderOverlay.show();
       try {
         final resp = await fileRef.putFile(file);
         final url = await fileRef.getDownloadURL();
         storeData(context, url.toString());
         debugPrint(url.toString());
-        //TODO: loader selesai
+        context.loaderOverlay.hide();
       } catch (e) {
-        // TODO: loader SELESAI
+        context.loaderOverlay.hide();
         debugPrint('terjadi kesalahan');
       }
     }
@@ -69,16 +70,16 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
       "created": Timestamp.now()
     };
 
-    // TODO: loader mulai
+    context.loaderOverlay.show();
     try {
       await kosServices.addData(body);
       // action setelah data berhasil di tambahkan
       reset();
       // navigasi ke halaman utama
       Navigator.pop(context);
-      // TODO: loader SELESAI
+      context.loaderOverlay.hide();
     } catch (e) {
-      // TODO: loader SELESAI
+      context.loaderOverlay.hide();
       debugPrint(e.toString());
     }
   }
