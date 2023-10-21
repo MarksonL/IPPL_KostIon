@@ -38,4 +38,13 @@ class KosServices {
   Future<void> addFasilitas(Map<String, dynamic> body, String kosId) {
     return db.doc(kosId).collection('fasilitas').add(body);
   }
+
+  // READ: list peraturan
+  Stream<QuerySnapshot> peraturan(String id) {
+    return db
+        .doc(id)
+        .collection('peraturan')
+        .orderBy('created', descending: true)
+        .snapshots();
+  }
 }
