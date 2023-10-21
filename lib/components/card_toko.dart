@@ -1,16 +1,16 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:kostlon/screen/member/kost/kost_detail.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class CardToko extends StatelessWidget {
-  CardToko(
-      {required this.title,
-      required this.image,
-      required this.alamat,
-      required this.harga,
-      required this.onDetail});
+  CardToko({
+    required this.title,
+    required this.image,
+    required this.alamat,
+    required this.harga,
+    required this.onDetail,
+  });
 
   String title;
   String image;
@@ -21,7 +21,7 @@ class CardToko extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onDetail(context),
+      onTap: () => onDetail(),
       child: Padding(
         padding: const EdgeInsets.only(top: 10),
         child: Card(

@@ -49,26 +49,22 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
                             mainAxisSpacing: 0),
                         itemCount: items.length,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              final String? id = items[index]?.id;
+                          return CardToko(
+                            title: items[index]['name'],
+                            image: items[index]['image'],
+                            alamat: items[index]['alamat'],
+                            harga: items[index]['price'].toString(),
+                            onDetail: () {
+                              final String id = items[index].id;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      OwnerKosDetailPage(id: id),
+                                  builder: (context) => OwnerKosDetailPage(
+                                    id: id,
+                                  ),
                                 ),
                               );
                             },
-                            child: CardToko(
-                              onDetail: () {
-                                // Handle onDetail logic here, if applicable
-                              },
-                              title: items[index]['name'],
-                              image: items[index]['image'],
-                              alamat: items[index]['alamat'],
-                              harga: items[index]['price'].toString(),
-                            ),
                           );
                         },
                         shrinkWrap: true,
