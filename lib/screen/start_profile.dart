@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kostlon/screen/auth.dart';
 import 'package:kostlon/screen/member/home_member.dart';
 import 'package:kostlon/screen/owner/home_owner.dart';
 import 'package:kostlon/utils/color_theme.dart';
@@ -64,22 +65,14 @@ class _StartProfilePageState extends State<StartProfilePage> {
           builder: (context) {
             return AlertDialog(
               title: Text('Profil Berhasil Disimpan'),
-              content: Text('Profil Anda telah berhasil disimpan.'),
+              content: Text(
+                  'Silakan lakukan verifikasi akun melalui link yang terdapat pada email yang telah dikirimkan dan melakukan login kembali'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(); // Tutup dialog sukses
-                    if (_selectedRole == 'member') {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HomeMemberPage()));
-                    } else if (_selectedRole == 'owner') {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HomeOwnerPage()));
-                    }
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                   child: Text('OK'),
                 ),

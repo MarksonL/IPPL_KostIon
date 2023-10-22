@@ -6,6 +6,7 @@ import 'package:kostlon/screen/member/home_member.dart';
 import 'package:kostlon/screen/owner/home_owner.dart';
 import 'package:kostlon/screen/register.dart';
 import 'package:kostlon/screen/resetpassword.dart';
+import 'package:kostlon/screen/start_profile.dart';
 import 'package:kostlon/utils/color_theme.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
@@ -26,12 +27,24 @@ class _LoginPageState extends State<LoginPage> {
   void submit(BuildContext context) async {
     context.loaderOverlay.show();
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential credential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _email.text.trim(),
         password: _password.text.trim(),
       );
-      checkRole(context);
-      context.loaderOverlay.hide();
+      if (credential.user!.emailVerified) {
+        checkRole(context);
+        context.loaderOverlay.hide();
+      } else {
+        context.loaderOverlay.hide();
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Akun anda belum terverifikasi"),
+              );
+            });
+      }
     } on FirebaseAuthException catch (e) {
       context.loaderOverlay.hide();
       showDialog(
@@ -55,8 +68,8 @@ class _LoginPageState extends State<LoginPage> {
           MaterialPageRoute(builder: (context) => const HomeMemberPage()),
         );
       }
-      // redirect halaman owner
-      if (res['role'] == 'owner') {
+      //redirect halaman owner
+      else if (res['role'] == 'owner') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomeOwnerPage()),

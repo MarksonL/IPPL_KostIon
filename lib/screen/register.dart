@@ -21,8 +21,27 @@ class _RegistrationPageState extends State<RegistrationPage> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => StartProfilePage()));
+        await userCredential.user!.sendEmailVerification();
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Verifikasi Email"),
+                content: Text(
+                    "Email untuk verifikasi akun telah dikirim ke alamat yang anda daftarkan. Silakan lanjutkan proses pembuatan akun aplikasi"),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StartProfilePage()));
+                      },
+                      child: Text("OK"))
+                ],
+              );
+            });
       } on FirebaseAuthException catch (e) {
         if (e.code == 'email-already-in-use') {
           showDialog(
