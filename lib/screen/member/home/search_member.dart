@@ -28,92 +28,62 @@ class _SearchScreenMemberState extends State<SearchScreenMember> {
           if (snapshot.hasData) {
             final items = snapshot.data!.docs;
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 3 / 3.5,
-                    crossAxisSpacing: 0,
-                    mainAxisSpacing: 0),
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  DocumentSnapshot item = items[index];
-
-                  String id = item.id;
-                  // return Container(child: Text("${item['image']}"));
-                  return CardToko(
-                    title: item['name'],
-                    image: item['image'],
-                    alamat: item['alamat'],
-                    harga: item['price'].toString(),
-                    onDetail: (context) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MemberKostDetail(id: id)),
-                      );
-                    },
-                  );
-                },
-                shrinkWrap: true,
+            return ListView(children: [
+              SizedBox(height: 20),
+              TextInput(label: 'Cari kost', val: _search),
+              SizedBox(height: 5),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Rekomendasi'),
+                    InkWell(
+                      onTap: () {},
+                      child: Text('Lihat Semua'),
+                    )
+                  ],
+                ),
               ),
-            );
-          }
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      childAspectRatio: 3 / 3.5,
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: 0),
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot item = items[index];
 
+                    String id = item.id;
+                    // return Container(child: Text("${item['image']}"));
+                    return CardToko(
+                      title: item['name'],
+                      image: item['image'],
+                      alamat: item['alamat'],
+                      harga: item['price'].toString(),
+                      onDetail: (context) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MemberKostDetail(id: id)),
+                        );
+                      },
+                    );
+                  },
+                  shrinkWrap: true,
+                ),
+              ),
+            ]);
+          }
           return Container();
         });
   }
 }
-
-// ListView(
-//       children: [
-//         SizedBox(height: 20),
-//         TextInput(label: 'Cari kost', val: _search),
-//         SizedBox(height: 5),
-//         Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               Text('Rekomendasi'),
-//               InkWell(
-//                 onTap: () {},
-//                 child: Text('Lihat Semua'),
-//               )
-//             ],
-//           ),
-//         ),
-//         Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 15),
-//           child: GridView.builder(
-//             physics: NeverScrollableScrollPhysics(),
-//             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-//                 maxCrossAxisExtent: 200,
-//                 childAspectRatio: 3 / 3.5,
-//                 crossAxisSpacing: 0,
-//                 mainAxisSpacing: 0),
-//             itemCount: listKost.length,
-//             itemBuilder: (context, index) {
-//               return CardToko(
-//                 title: listKost[index]['title'],
-//                 image: listKost[index]['image'],
-//                 alamat: listKost[index]['alamat'],
-//                 harga: listKost[index]['harga'],
-//                 onDetail: (context) {
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(builder: (context) => MemberKostDetail()),
-//                   );
-//                 },
-//               );
-//             },
-//             shrinkWrap: true,
-//           ),
-//         ),
-//       ],
-//     );
 
 class TextInput extends StatelessWidget {
   const TextInput({
