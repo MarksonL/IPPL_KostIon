@@ -66,7 +66,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
             return AlertDialog(
               title: Text('Profil Berhasil Disimpan'),
               content: Text(
-                  'Silakan lakukan verifikasi akun melalui link yang terdapat pada email yang telah dikirimkan dan melakukan login kembali'),
+                  'Silakan lakukan verifikasi akun melalui link yang terdapat pada email yang telah dikirimkan untuk menyelesaikan proses verifikasi akun'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
