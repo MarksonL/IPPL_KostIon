@@ -2,7 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/components/card_toko.dart';
-import 'package:kostlon/data/dummy_kost.dart';
+// import 'package:kostlon/data/dummy_kost.dart';
 import 'package:kostlon/screen/member/kost/kost_detail.dart';
 import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
@@ -57,20 +57,24 @@ class _SearchScreenMemberState extends State<SearchScreenMember> {
                       mainAxisSpacing: 0),
                   itemCount: items.length,
                   itemBuilder: (context, index) {
-                    DocumentSnapshot item = items[index];
+                    // DocumentSnapshot item = items[index];
 
-                    String id = item.id;
+                    // String id = item.id;
                     // return Container(child: Text("${item['image']}"));
                     return CardToko(
-                      title: item['name'],
-                      image: item['image'],
-                      alamat: item['alamat'],
-                      harga: item['price'].toString(),
-                      onDetail: (context) {
+                      title: items[index]['name'],
+                      image: items[index]['image'],
+                      alamat: items[index]['alamat'],
+                      harga: items[index]['price'].toString(),
+                      onDetail: () {
+                        final String id = items[index].id;
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MemberKostDetail(id: id)),
+                            builder: (context) => MemberKostDetail(
+                              id: id,
+                            ),
+                          ),
                         );
                       },
                     );
