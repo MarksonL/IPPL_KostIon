@@ -59,8 +59,10 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PengajuanSewaForm()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RentalApplicationForm()));
           },
           label: Text("Ajukan Sewa"),
           backgroundColor: AppColor.primary,
