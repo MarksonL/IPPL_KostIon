@@ -41,7 +41,7 @@ class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
               if (snapshot.hasData) {
                 final item = snapshot.data;
                 return ListView(
-                  shrinkWrap: true,
+                  shrinkWrap: true, //
                   physics: NeverScrollableScrollPhysics(),
                   children: [
                     Container(
@@ -90,7 +90,7 @@ class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
                       title: Text('Fasilitas'),
                       children: [
                         FasilitasBuilder(
-                            kosServices: kosServices, widget: widget)
+                            kosServices: kosServices, id: widget.id)
                       ],
                     ),
                     ExpansionTile(

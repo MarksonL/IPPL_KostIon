@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:kostlon/screen/owner/kos/kos_detail.dart';
 import 'package:kostlon/services/kos_services.dart';
 
-class FasilitasBuilder extends StatelessWidget {
-  const FasilitasBuilder({
+class MemberFasilitasBuilder extends StatelessWidget {
+  const MemberFasilitasBuilder({
     super.key,
     required this.kosServices,
     required this.id,
@@ -15,35 +14,28 @@ class FasilitasBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
+    return StreamBuilder(
       stream: kosServices.fasilitas(id),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          final items = snapshot.data?.docs;
+          var items = snapshot.data!.docs;
+
           return ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemCount: items!.length,
+            itemCount: items.length,
             itemBuilder: (context, index) {
               QueryDocumentSnapshot item = items[index];
-
               return ListTile(
-                title: Text('${item['name']}'),
-                trailing: IconButton(
-                    onPressed: () {
-                      kosServices.deleteFasilitas(id, item.id);
-                    },
-                    icon: Icon(Icons.delete)),
+                title: Text(item['name']),
               );
             },
           );
+        } else {
+          return Center(
+            child: Text('Fasilitas kosong'),
+          );
         }
-
-        return Container(
-          child: Center(
-            child: Text('Data kosong'),
-          ),
-        );
       },
     );
   }

@@ -36,6 +36,7 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
     });
   }
 
+  // 1. upload gambar untuk mendapatkan url
   void submit(BuildContext context) async {
     if (_selectedImage != null) {
       final fileRef = storageRef.child('kos/${_selectedImage!.name}');
@@ -54,6 +55,7 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
     }
   }
 
+  // 2. simpan data ke firebase database
   void storeData(BuildContext context, String imgPath) async {
     // ambil data user yang sedang login
     User? owner = FirebaseAuth.instance.currentUser;
