@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kostlon/screen/member/kost/builder/member_fasilitas_builder.dart';
 import 'package:kostlon/screen/member/kost/form_sewa.dart';
 import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
@@ -20,18 +21,6 @@ class MemberKostDetail extends StatefulWidget {
 
 class _MemberKostDetailState extends State<MemberKostDetail> {
   final KosServices kosServices = KosServices();
-  final List fasilitas = [];
-
-  void getFasilitas() {
-    var res = kosServices.fasilitas(widget.id);
-    print(res);
-  }
-
-  @override
-  void initState() {
-    getFasilitas();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +36,22 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
         body: StreamBuilder<DocumentSnapshot>(
           stream: kosServices.getDetail(widget.id),
           builder: (context, snapshot) {
-            DocumentSnapshot? item = snapshot.data;
-            return BodyDetail(
-              name: item!['name'],
-              alamat: item!['alamat'],
-              owner: item!['owner'],
-              price: item!['price'].toString(),
-              image: item!['image'],
-            );
+            if (snapshot.hasData) {
+              DocumentSnapshot? item = snapshot.data;
+              return BodyDetail(
+                id: item!.id,
+                name: item!['name'],
+                alamat: item!['alamat'],
+                owner: item!['owner'],
+                price: item!['price'].toString(),
+                image: item!['image'],
+                kosServices: KosServices(),
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
           },
         ),
         floatingActionButton: FloatingActionButton.extended(
@@ -74,13 +71,23 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
 
 class BodyDetail extends StatelessWidget {
   const BodyDetail(
-      {super.key, this.name, this.alamat, this.owner, this.price, this.image});
+      {super.key,
+      required this.id,
+      this.name,
+      this.alamat,
+      this.owner,
+      this.price,
+      this.image,
+      required this.kosServices});
 
+  final String id;
   final String? name;
   final String? alamat;
   final String? owner;
   final String? price;
   final String? image;
+
+  final KosServices kosServices;
 
   @override
   Widget build(BuildContext context) {
@@ -199,35 +206,31 @@ class BodyDetail extends StatelessWidget {
             ),
             child: TabBarView(
               children: [
-                ListView(
-                  itemExtent: 40,
-                  children: [
-                    ListTile(
-                      title: Text('TV'),
-                      // subtitle: Text('Ukuran 24 inch'),
-                    ),
-                    ListTile(
-                      title: Text('Kasur'),
-                      // subtitle: Text('King size'),
-                    )
-                  ],
-                ),
-                ListView(
-                  itemExtent: 60,
-                  children: [
-                    ListTile(
-                      title: Text('Kunjungan Tamu'),
-                      subtitle: Text('Batas akhir kunjungan jam 10 malam '),
-                    ),
-                    ListTile(
-                      title: Text('Parkir'),
-                      subtitle: Text('Parkir sesuai dengan nomer kamar'),
-                    ),
-                    ListTile(
-                      title: Text('Tamu'),
-                      subtitle: Text('Tamu menginap maksimal 2X24 jam'),
-                    )
-                  ],
+                // fasilitas
+                MemberFasilitasBuilder(kosServices: kosServices, id: id),
+                StreamBuilder(
+                  stream: kosServices.peraturan(id),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var items = snapshot.data!.docs;
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          QueryDocumentSnapshot item = items[index];
+                          return ListTile(
+                            title: Text(item['name']),
+                          );
+                        },
+                      );
+                    } else {
+                      return Center(
+                        child: Text('Fasilitas kosong'),
+                      );
+                    }
+                  },
                 )
               ],
             ),
