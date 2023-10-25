@@ -1,114 +1,115 @@
 import 'package:flutter/material.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
-class PengajuanSewaForm extends StatefulWidget {
+class RentalApplicationForm extends StatefulWidget {
   @override
-  _PengajuanSewaFormState createState() => _PengajuanSewaFormState();
+  _RentalApplicationFormState createState() => _RentalApplicationFormState();
 }
 
-class _PengajuanSewaFormState extends State<PengajuanSewaForm> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController profesiController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController startDateController = TextEditingController();
+class _RentalApplicationFormState extends State<RentalApplicationForm> {
+  final _nameController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
+  late String _jenisKelamin;
+  final _pekerjaanController = TextEditingController();
+  late DateTime _tanggalMulaiNgekos;
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _pilihTanggal(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      lastDate: DateTime(2050),
     );
-    if (picked != null && picked != DateTime.now()) {
+
+    if (picked != null && picked != _tanggalMulaiNgekos) {
       setState(() {
-        startDateController.text = picked.toString();
+        _tanggalMulaiNgekos = picked;
       });
     }
   }
+
+  void submit(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ajukan Sewa"),
-        centerTitle: true,
-        backgroundColor: AppColor.primary,
+        title: Text('Formulir Pengajuan Sewa'),
       ),
-      body: Theme(
-        data: ThemeData(
-          primaryColor: AppColor.primary,
-          colorScheme:
-              ColorScheme.fromSwatch().copyWith(secondary: AppColor.primary),
-        ),
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Form(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(labelText: 'Nama Penyewa'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Nama penyewa wajib diisi';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _phoneNumberController,
+                decoration: InputDecoration(labelText: 'Nomor HP'),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Nomor HP wajib diisi';
+                  }
+                  return null;
+                },
+              ),
+              DropdownButtonFormField(
+                value: _jenisKelamin,
+                hint: Text('Jenis Kelamin'),
+                items: ['Laki-laki', 'Perempuan']
+                    .map((label) => DropdownMenuItem(
+                          child: Text(label),
+                          value: label,
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _jenisKelamin = value!;
+                  });
+                },
+              ),
+              TextFormField(
+                controller: _pekerjaanController,
+                decoration: InputDecoration(labelText: 'Pekerjaan'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Pekerjaan wajib diisi';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 10),
+              Row(
                 children: <Widget>[
-                  TextFormField(
-                    controller: nameController,
-                    decoration: InputDecoration(labelText: "Nama anda"),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Mohon masukkan nama anda";
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: profesiController,
-                    decoration: InputDecoration(labelText: "Profesi anda"),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Mohon masukkan profesi anda";
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: phoneNumberController,
-                    decoration: InputDecoration(labelText: "Nomor Telepon"),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Mohon masukkan nomor telepon anda";
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: startDateController,
-                    decoration: InputDecoration(labelText: "Tanggal Awal Sewa"),
-                    onTap: () {
-                      _selectDate(
-                          context); // Memanggil fungsi _selectDate saat bidang tanggal diklik
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Mohon pilih tanggal awal sewa";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16),
+                  Text('Tanggal Mulai Ngekos:'),
+                  SizedBox(width: 10),
                   ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: Text("Ajukan"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.primary,
-                    ),
+                    onPressed: () => _pilihTanggal(context),
+                    child: Text(_tanggalMulaiNgekos != null
+                        ? "${_tanggalMulaiNgekos.toLocal()}".split(' ')[0]
+                        : 'Pilih Tanggal'),
                   ),
                 ],
               ),
-            ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ElevatedButton(
+                  onPressed: () => submit(context),
+                  child: Text('Simpan'),
+                ),
+              ),
+            ],
           ),
         ),
       ),
