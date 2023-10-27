@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kostlon/services/member_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class RentalApplicationForm extends StatefulWidget {
@@ -12,6 +13,7 @@ class _RentalApplicationFormState extends State<RentalApplicationForm> {
   late String _jenisKelamin;
   final _pekerjaanController = TextEditingController();
   late DateTime _tanggalMulaiNgekos;
+  final MemberServices memberServices = MemberServices();
 
   Future<void> _pilihTanggal(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -28,7 +30,18 @@ class _RentalApplicationFormState extends State<RentalApplicationForm> {
     }
   }
 
-  void submit(BuildContext context) {}
+  void submit(BuildContext context) async {
+    try {
+      var resp = await memberServices.addData({
+        'name': 'member 1',
+        'member_id': '1',
+        'kos': 'kos 1',
+        'kos_id': '1'
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
