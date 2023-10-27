@@ -7,9 +7,10 @@ class MemberServices {
   final storage = FirebaseStorage.instance;
 
   // CREATE: tambah data kos { "asdasd": string, int dlll }
-  Future<void> addData(Map<String, dynamic> body) {
+  Future<void> addData(Map<String, dynamic> body) async {
     // hit save image
     // simpan dataß
-    return db.add(body);
+    // return db.add(body);
+    return print(body);
   }
 }

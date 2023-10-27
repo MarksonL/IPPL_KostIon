@@ -10,9 +10,10 @@ class RentalApplicationForm extends StatefulWidget {
 class _RentalApplicationFormState extends State<RentalApplicationForm> {
   final _nameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
-  late String _jenisKelamin;
+  String _jenisKelamin = 'Laki-laki';
   final _pekerjaanController = TextEditingController();
-  late DateTime _tanggalMulaiNgekos;
+  DateTime? _tanggalMulaiNgekos;
+  int _durasiSewa = 1;
   final MemberServices memberServices = MemberServices();
 
   Future<void> _pilihTanggal(BuildContext context) async {
@@ -48,6 +49,7 @@ class _RentalApplicationFormState extends State<RentalApplicationForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Formulir Pengajuan Sewa'),
+        backgroundColor: AppColor.primary,
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -55,9 +57,20 @@ class _RentalApplicationFormState extends State<RentalApplicationForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Nama Penyewa',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Nama Penyewa'),
+                decoration: InputDecoration(
+                  labelText: 'Nama Penyewa',
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.primary)),
+                ),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Nama penyewa wajib diisi';
@@ -65,9 +78,19 @@ class _RentalApplicationFormState extends State<RentalApplicationForm> {
                   return null;
                 },
               ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Nomor HP',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               TextFormField(
                 controller: _phoneNumberController,
-                decoration: InputDecoration(labelText: 'Nomor HP'),
+                decoration: InputDecoration(
+                  labelText: 'Nomor HP',
+                  border: OutlineInputBorder(),
+                ),
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -75,6 +98,33 @@ class _RentalApplicationFormState extends State<RentalApplicationForm> {
                   }
                   return null;
                 },
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Pekerjaan',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextFormField(
+                controller: _pekerjaanController,
+                decoration: InputDecoration(
+                  labelText: 'Pekerjaan',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Pekerjaan wajib diisi';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Jenis Kelamin',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
               DropdownButtonFormField(
                 value: _jenisKelamin,
@@ -91,33 +141,70 @@ class _RentalApplicationFormState extends State<RentalApplicationForm> {
                   });
                 },
               ),
-              TextFormField(
-                controller: _pekerjaanController,
-                decoration: InputDecoration(labelText: 'Pekerjaan'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Pekerjaan wajib diisi';
-                  }
-                  return null;
-                },
+              SizedBox(
+                height: 20,
               ),
-              SizedBox(height: 10),
               Row(
                 children: <Widget>[
-                  Text('Tanggal Mulai Ngekos:'),
+                  Text(
+                    'Tanggal Mulai Ngekos:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   SizedBox(width: 10),
                   ElevatedButton(
-                    onPressed: () => _pilihTanggal(context),
-                    child: Text(_tanggalMulaiNgekos != null
-                        ? "${_tanggalMulaiNgekos.toLocal()}".split(' ')[0]
-                        : 'Pilih Tanggal'),
-                  ),
+                      onPressed: () => _pilihTanggal(context),
+                      child: Text(_tanggalMulaiNgekos != null
+                          ? "${_tanggalMulaiNgekos!.toLocal()}".split(' ')[0]
+                          : 'Pilih Tanggal'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.primary,
+                      )),
                 ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Durasi Sewa/bulan',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.remove),
+                      onPressed: () {
+                        setState(() {
+                          if (_durasiSewa > 1) {
+                            _durasiSewa--;
+                          }
+                        });
+                      },
+                    ),
+                    Text(
+                      '$_durasiSewa',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () {
+                        setState(() {
+                          _durasiSewa++;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColor.primary,
+                  ),
                   onPressed: () => submit(context),
                   child: Text('Simpan'),
                 ),
