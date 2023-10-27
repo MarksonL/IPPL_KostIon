@@ -19,7 +19,7 @@ class KosServices {
     return db.add(body);
   }
 
-  // READ: ambil data kos
+  // READ: ambil data detail kos
   Stream<DocumentSnapshot<Object?>> getDetail(String id) {
     final dataStream = db.doc(id).snapshots();
     return dataStream;
