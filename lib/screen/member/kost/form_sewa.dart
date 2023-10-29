@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/services/member_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
@@ -32,13 +33,21 @@ class _RentalApplicationFormState extends State<RentalApplicationForm> {
   }
 
   void submit(BuildContext context) async {
+    User? member = FirebaseAuth.instance.currentUser;
+    Map<String, dynamic> body = {
+      'name': _nameController.text,
+      'member_id': member?.uid,
+      'kos': 'kos 1',
+      'kos_id': '1',
+      'nomor_hp': _phoneNumberController.text,
+      'jenis_kelamin': _jenisKelamin,
+      'pekerjaan': _pekerjaanController.text,
+      'tanggal_sewa': _tanggalMulaiNgekos.toString(),
+      'durasi': _durasiSewa.toString()
+    };
     try {
-      var resp = await memberServices.addData({
-        'name': 'member 1',
-        'member_id': '1',
-        'kos': 'kos 1',
-        'kos_id': '1'
-      });
+      var resp = await memberServices.addData(body);
+      print('succes');
     } catch (e) {
       print(e);
     }
