@@ -46,11 +46,24 @@ class _RentalApplicationFormState extends State<RentalApplicationForm> {
       'durasi': _durasiSewa.toString()
     };
     try {
-      var resp = await memberServices.addData(body);
-      print('succes');
+      await memberServices.addData(body);
+      // action setelah data berhasil di tambahkan
+      reset();
+      // navigasi ke halaman utama
+      Navigator.pop(context);
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
+  }
+
+  void reset() {
+    setState(() {
+      _nameController.clear();
+      _phoneNumberController.clear();
+      _jenisKelamin = 'Lakilaki';
+      _pekerjaanController.clear();
+      _durasiSewa = 1;
+    });
   }
 
   @override
