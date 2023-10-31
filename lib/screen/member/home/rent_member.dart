@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:kostlon/screen/member/kost/form_kerusakan.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class RentMemberScreen extends StatelessWidget {
@@ -66,23 +67,93 @@ class RentMemberScreen extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 30),
-        ButtonAction(
-          label: 'Pembayaran',
-          onTap: () {},
-          color: Colors.teal,
+        SizedBox(height: 20),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LaporanKerusakanForm(),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              elevation: 0,
+              backgroundColor: Colors.teal,
+              padding: const EdgeInsets.symmetric(vertical: 20),
+            ),
+            child: const Text(
+              'Pembayaran',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
-        SizedBox(height: 10),
-        ButtonAction(
-          label: 'Laporakan Kerusakan',
-          onTap: () {},
-          color: AppColor.primary,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LaporanKerusakanForm(),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              elevation: 0,
+              backgroundColor: AppColor.primary,
+              padding: const EdgeInsets.symmetric(vertical: 20),
+            ),
+            child: const Text(
+              'Laporkan Kerusakan',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
-        SizedBox(height: 10),
-        ButtonAction(
-          label: 'Keluar Kos',
-          onTap: () {},
-          color: Colors.red,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LaporanKerusakanForm(),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              elevation: 0,
+              backgroundColor: Colors.red,
+              padding: const EdgeInsets.symmetric(vertical: 20),
+            ),
+            child: const Text(
+              'Keluar Kos',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
         SizedBox(height: 10),
       ],
