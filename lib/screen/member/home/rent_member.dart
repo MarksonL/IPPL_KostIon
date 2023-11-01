@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:kostlon/screen/member/kost/form_kerusakan.dart';
+import 'package:kostlon/screen/member/kost/form_pembayaran.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class RentMemberScreen extends StatelessWidget {
@@ -76,7 +77,7 @@ class RentMemberScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => LaporanKerusakanForm(),
+                  builder: (context) => PembayaranForm(),
                 ),
               );
             },
@@ -131,11 +132,44 @@ class RentMemberScreen extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LaporanKerusakanForm(),
-                ),
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Konfirmasi Keluar Kos'),
+                    content: Text('Apakah Anda yakin ingin keluar kos?'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Batal'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          showDialog(
+                              context: context,
+                              builder: ((context) {
+                                return AlertDialog(
+                                  title: Text("Permintaan Dikirim"),
+                                  content: Text(
+                                      "Permintaan keluar kost anda telah dikirim, mohon untuk menunggu dari konfirmasi dari pemilik kost"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("Oke"))
+                                  ],
+                                );
+                              }));
+                        },
+                        child: Text('Keluar Kos'),
+                      ),
+                    ],
+                  );
+                },
               );
             },
             style: ElevatedButton.styleFrom(
