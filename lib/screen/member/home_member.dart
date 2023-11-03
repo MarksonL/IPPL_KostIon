@@ -41,12 +41,35 @@ class _HomeMemberPageState extends State<HomeMemberPage> {
         elevation: 0,
         actions: [
           IconButton(
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-              );
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Konfirmasi Keluar"),
+                      content:
+                          Text("Apakah anda yakin ingin keluar dari akun?"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("Batal"),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()),
+                            );
+                          },
+                          child: Text("Ya"),
+                        )
+                      ],
+                    );
+                  });
             },
             icon: Icon(Icons.logout_rounded),
           )
