@@ -1,12 +1,23 @@
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_final_fields, library_private_types_in_public_api, use_build_context_synchronously
+
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:kostlon/services/laporan_services.dart';
-import 'dart:io';
+import 'package:kostlon/services/laporan_services.dart';
 
 import 'package:kostlon/utils/color_theme.dart';
 
 class LaporanKerusakanForm extends StatefulWidget {
+  const LaporanKerusakanForm({
+    super.key,
+    required this.kos,
+  });
+
+  final Map<String, dynamic> kos;
   @override
   _LaporanKerusakanFormState createState() => _LaporanKerusakanFormState();
 }
@@ -16,8 +27,10 @@ class _LaporanKerusakanFormState extends State<LaporanKerusakanForm> {
   TextEditingController _nomorKamarController = TextEditingController();
   TextEditingController _judulKerusakanController = TextEditingController();
   TextEditingController _keteranganController = TextEditingController();
+  final storageRef = FirebaseStorage.instance.ref();
+
   XFile? _selectedImage;
-  // final LaporanServices laporanServices = LaporanServices();
+  final LaporanServices laporanServices = LaporanServices();
 
   Future<void> _getImage() async {
     final picker = ImagePicker();
@@ -28,30 +41,34 @@ class _LaporanKerusakanFormState extends State<LaporanKerusakanForm> {
   }
 
   void submit(BuildContext context) async {
-    User? member = FirebaseAuth.instance.currentUser;
-    if (_formKey.currentState!.validate()) {
-      Map<String, dynamic> body = {
-        // 'name': member?.displayName,
-        // 'member_id': member?.uid,
-        // 'kos': 'kos 1',
-        // 'kos_id': '1',
-        // 'kamar': _nomorKamarController.text,
-        // 'judul': _judulKerusakanController.text,
-        // 'keterangan': _keteranganController.text
-      };
+    if (_selectedImage != null) {
+      final fileRef = storageRef.child('laporan/${_selectedImage!.name}');
+      final File file = File(_selectedImage!.path);
       try {
-        // Implementasikan logika untuk mengirim laporan kerusakan ke server atau penyimpanan data
-        // ...
-        // Setelah berhasil mengirim laporan, tampilkan pesan sukses atau kembali ke halaman sebelumnya
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text('Laporan kerusakan berhasil dikirim'),
-        //   ),
-        // );
+        await fileRef.putFile(file);
+        final url = await fileRef.getDownloadURL();
+        storeData(context, url.toString());
+        debugPrint(url.toString());
       } catch (e) {
-        print(e);
+        debugPrint('terjadi kesalahan');
       }
     }
+  }
+
+  void storeData(BuildContext context, String urlImage) {
+    User? user = FirebaseAuth.instance.currentUser;
+    laporanServices.store({
+      "member_id": user!.uid,
+      "image": urlImage,
+      "status": "new",
+      "no_kamar": _nomorKamarController.text,
+      "kerusakan": _judulKerusakanController.text,
+      "deskripsi": _keteranganController.text,
+      ...widget.kos,
+      "created": Timestamp.now()
+    });
+
+    Navigator.pop(context);
   }
 
   @override
@@ -61,107 +78,118 @@ class _LaporanKerusakanFormState extends State<LaporanKerusakanForm> {
         title: Text('Laporkan Kerusakan'),
         backgroundColor: AppColor.primary,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: _getImage,
-                child: Text('Pilih Gambar Kerusakan'),
-                style:
-                    ElevatedButton.styleFrom(backgroundColor: AppColor.primary),
-              ),
-              // GAMBAR KERUSAKAN
-              // _image != null
-              //     ? Image.file(
-              //         _image,
-              //         height: 150,
-              //       )
-              //     : Container(),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Nomor Kamar',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextFormField(
-                controller: _nomorKamarController,
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.primary, width: 1.0),
-                  ),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColor.primary)),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 20,
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Nomor kamar tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Judul Kerusakan',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextFormField(
-                controller: _judulKerusakanController,
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.primary, width: 1.0),
+                Center(
+                  child: GestureDetector(
+                    onTap: _getImage,
+                    child: _selectedImage == null
+                        ? Container(
+                            width: 200,
+                            height: 200,
+                            color: Colors.grey,
+                            child: Icon(Icons.camera_alt,
+                                size: 50, color: Colors.white),
+                            alignment: Alignment.center,
+                          )
+                        : Image.file(
+                            File(_selectedImage!.path),
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
                   ),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColor.primary)),
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Judul kerusakan tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Keterangan Kerusakan',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextFormField(
-                controller: _keteranganController,
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.primary, width: 1.0),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'Nomor Kamar',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextFormField(
+                  controller: _nomorKamarController,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColor.primary, width: 1.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColor.primary)),
                   ),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColor.primary)),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Nomor kamar tidak boleh kosong';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Keterangan kerusakan tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ElevatedButton(
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'Judul Kerusakan',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextFormField(
+                  controller: _judulKerusakanController,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColor.primary, width: 1.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColor.primary)),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Judul kerusakan tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'Keterangan Kerusakan',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextFormField(
+                  controller: _keteranganController,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColor.primary, width: 1.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColor.primary)),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Keterangan kerusakan tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
                   onPressed: () => submit(context),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: AppColor.primary),
                   child: Text('Simpan'),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

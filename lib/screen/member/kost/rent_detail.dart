@@ -1,10 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/screen/member/kost/form_kerusakan.dart';
 import 'package:kostlon/screen/member/kost/form_pembayaran.dart';
-import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/services/member_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
@@ -40,7 +38,6 @@ class _RentDetailPageState extends State<RentDetailPage> {
       body: StreamBuilder(
         stream: memberServices.detailRent(widget.id),
         builder: (context, snapshot) {
-          print(widget.id);
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
@@ -89,7 +86,12 @@ class _RentDetailPageState extends State<RentDetailPage> {
                       "nama_kos": item['name'],
                     },
                   ),
-                  ActionLaporan(),
+                  ActionLaporan(
+                    kos: {
+                      "kos_id": item['kos_id'],
+                      "nama_kos": item['name'],
+                    },
+                  ),
                   // ActionKeluar(),
                 ],
               ),
@@ -174,9 +176,8 @@ class ActionKeluar extends StatelessWidget {
 }
 
 class ActionLaporan extends StatelessWidget {
-  const ActionLaporan({
-    super.key,
-  });
+  const ActionLaporan({super.key, required this.kos});
+  final Map<String, dynamic> kos;
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +189,9 @@ class ActionLaporan extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LaporanKerusakanForm(),
+              builder: (context) => LaporanKerusakanForm(
+                kos: kos,
+              ),
             ),
           );
         },
