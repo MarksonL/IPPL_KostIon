@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/screen/auth.dart';
 import 'package:kostlon/screen/owner/home/home_owner.dart';
+import 'package:kostlon/screen/owner/home/laporan_owner.dart';
 import 'package:kostlon/screen/owner/home/payment_owner.dart';
 import 'package:kostlon/screen/owner/home/profile_owner.dart';
 import 'package:kostlon/screen/owner/home/request_owner.dart';
@@ -27,12 +28,15 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
     HomeOwnerScreen(),
     PaymentOwnerScreen(),
     RequestOwnerScreen(),
+    LaporanOwnerScreen(),
     ProfileOwnerScreen()
   ];
 
   final List<Widget> _iconOptions = <Widget>[
     Icon(Icons.add),
     Icon(Icons.add),
+    Icon(Icons.people),
+    Icon(Icons.people),
     Icon(Icons.people),
   ];
   void _onItemTapped(int index) {
@@ -64,7 +68,7 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
       body: SafeArea(
         child: _widgetOptions[_selectedIndex],
       ),
-      floatingActionButton: _selectedIndex != 3
+      floatingActionButton: _selectedIndex != 3 && _selectedIndex != 4
           ? FloatingActionButton(
               onPressed: () {
                 switch (_selectedIndex) {
@@ -75,13 +79,13 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
                           builder: (context) => const OwnerKostFormPage()),
                     );
                   case 1:
-                    print('pembayaran');
                   case 2:
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const MemberListPage()),
                     );
+                  case 3:
                   default:
                 }
               },
@@ -101,6 +105,10 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.add_alert),
             label: 'Permintan Kos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_alert),
+            label: 'Laporan',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people),

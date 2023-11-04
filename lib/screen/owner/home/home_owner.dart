@@ -34,10 +34,10 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
             if (items!.isNotEmpty) {
               return ListView(
                 children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextInput(label: "Cari", val: _search),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
+                  // TextInput(label: "Cari", val: _search),
                   Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: GridView.builder(
