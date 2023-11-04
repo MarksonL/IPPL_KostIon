@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kostlon/services/laporan_services.dart';
+// import 'package:kostlon/services/laporan_services.dart';
 import 'dart:io';
 
 import 'package:kostlon/utils/color_theme.dart';
@@ -17,7 +17,7 @@ class _LaporanKerusakanFormState extends State<LaporanKerusakanForm> {
   TextEditingController _judulKerusakanController = TextEditingController();
   TextEditingController _keteranganController = TextEditingController();
   XFile? _selectedImage;
-  final LaporanServices laporanServices = LaporanServices();
+  // final LaporanServices laporanServices = LaporanServices();
 
   Future<void> _getImage() async {
     final picker = ImagePicker();

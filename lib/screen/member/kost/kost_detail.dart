@@ -1,10 +1,12 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kostlon/screen/member/kost/builder/member_fasilitas_builder.dart';
-import 'package:kostlon/screen/member/kost/form_sewa.dart';
 import 'package:kostlon/services/kos_services.dart';
+import 'package:kostlon/services/member_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class MemberKostDetail extends StatefulWidget {
@@ -20,7 +22,13 @@ class MemberKostDetail extends StatefulWidget {
 }
 
 class _MemberKostDetailState extends State<MemberKostDetail> {
+  TextEditingController _durasi = TextEditingController();
+  TextEditingController _tanggalContainer = TextEditingController();
+  DateTime? _tanggal;
+  Map<String, dynamic> kos = {};
+
   final KosServices kosServices = KosServices();
+  final MemberServices memberServices = MemberServices();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +46,13 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               DocumentSnapshot? item = snapshot.data;
+              kos = {
+                "name": item!['name'],
+                "alamat": item!['alamat'],
+                "owner": item!['owner'],
+                "owner_id": item!['owner_id'],
+                "price": item!['price'].toString(),
+              };
               return BodyDetail(
                 id: item!.id,
                 name: item!['name'],
@@ -55,17 +70,130 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
           },
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => RentalApplicationForm()));
-          },
+          onPressed: () => ajukanSewa(context),
           label: Text("Ajukan Sewa"),
           backgroundColor: AppColor.primary,
         ),
       ),
     );
+  }
+
+  Future ajukanSewa(BuildContext context) {
+    setState(() {
+      _durasi.text = 1.toString();
+      _tanggal = null;
+      _tanggalContainer.clear();
+    });
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Ajukan Sewa',
+            style: TextStyle(fontSize: 18),
+          ),
+          content: Container(
+            height: 200,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                'Durasi Sewa / Bulan',
+                style: TextStyle(fontSize: 12, color: AppColor.textPrimary),
+              ),
+              TextFormField(
+                controller: _durasi,
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty || value == 0) {
+                    return "Input tidak boleh kosong atau 0";
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Text(
+                'Tanggal Sewa',
+                style: TextStyle(fontSize: 12, color: AppColor.textPrimary),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: TextFormField(
+                      controller: _tanggalContainer,
+                      readOnly: true,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => _pilihTanggal(context),
+                    icon: Icon(Icons.calendar_month),
+                  )
+                ],
+              )
+            ]),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Batal'),
+              onPressed: () => Navigator.pop(context),
+            ),
+            TextButton(
+              child: Text('Ajukan'),
+              onPressed: () => _submitSewa(context),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _pilihTanggal(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2050),
+    );
+    if (picked != null && picked != _tanggal) {
+      setState(() {
+        _tanggal = picked;
+        _tanggalContainer.text = picked.toString().split(" ")[0];
+      });
+    }
+  }
+
+  void _submitSewa(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+    Map<String, dynamic> body = {
+      'user_id': user!.uid,
+      'user_email': user!.email,
+      'kos_id': widget.id,
+      ...kos,
+      'durasi_sewa': _durasi.text,
+      'tanggal_mulai': _tanggalContainer.text,
+      'approved': false,
+      'created_at': Timestamp.now()
+    };
+    final res = memberServices.addData(body);
+
+    if (res) {
+      Navigator.pop(context);
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'pengajuan tidak dapat dilanjutkan',
+              style: TextStyle(fontSize: 12),
+            ),
+          );
+        },
+      );
+    }
   }
 }
 
