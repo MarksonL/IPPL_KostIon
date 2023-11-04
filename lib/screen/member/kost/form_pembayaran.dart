@@ -1,16 +1,31 @@
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, avoid_unnecessary_containers, sort_child_properties_last
+
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kostlon/services/payment_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class PembayaranForm extends StatefulWidget {
+  const PembayaranForm({
+    super.key,
+    required this.kos,
+  });
+
+  final Map<String, dynamic> kos;
   @override
   _PembayaranFormState createState() => _PembayaranFormState();
 }
 
 class _PembayaranFormState extends State<PembayaranForm> {
-  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController _jumlahController = TextEditingController();
+  final storageRef = FirebaseStorage.instance.ref();
   XFile? _selectedImage;
+
+  PaymentServices paymentServices = PaymentServices();
 
   Future<void> _getImage() async {
     final picker = ImagePicker();
@@ -19,6 +34,38 @@ class _PembayaranFormState extends State<PembayaranForm> {
     setState(() {
       _selectedImage = pickedImage;
     });
+  }
+
+  void submit(BuildContext context) async {
+    if (_selectedImage != null) {
+      final fileRef = storageRef.child('pembayaran/${_selectedImage!.name}');
+      final File file = File(_selectedImage!.path);
+      // context.loaderOverlay.show();
+      try {
+        await fileRef.putFile(file);
+        final url = await fileRef.getDownloadURL();
+        storeData(context, url.toString());
+        debugPrint(url.toString());
+        // context.loaderOverlay.hide();
+      } catch (e) {
+        // context.loaderOverlay.hide();
+        debugPrint('terjadi kesalahan');
+      }
+    }
+  }
+
+  void storeData(BuildContext context, String urlImage) {
+    User? user = FirebaseAuth.instance.currentUser;
+    paymentServices.store({
+      "member_id": user!.uid,
+      "image": urlImage,
+      "status": "new",
+      "pembayaran": _jumlahController.text,
+      ...widget.kos,
+      "created": Timestamp.now()
+    });
+
+    Navigator.pop(context);
   }
 
   @override
@@ -35,10 +82,6 @@ class _PembayaranFormState extends State<PembayaranForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Upload Foto Pembayaran',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
               SizedBox(height: 8),
               Center(
                 child: GestureDetector(
@@ -61,39 +104,23 @@ class _PembayaranFormState extends State<PembayaranForm> {
                 ),
               ),
               SizedBox(height: 16),
-              Text(
-                'Deskripsi Pembayaran',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
               SizedBox(height: 8),
               TextFormField(
-                controller: descriptionController,
+                controller: _jumlahController,
                 decoration: InputDecoration(
-                  hintText: 'Masukkan deskripsi pembayaran',
+                  label: Text('Jumlah Pembayaran'),
                 ),
+                keyboardType: TextInputType.number,
               ),
               SizedBox(height: 16),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    String description = descriptionController.text;
-                    // Lakukan sesuatu dengan deskripsi dan gambar yang dipilih
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    elevation: 0,
-                    backgroundColor: Colors.teal,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-                  ),
-                  child: Text(
-                    'Kirim Pembayaran',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+              ElevatedButton(
+                onPressed: () {
+                  submit(context);
+                },
+                child: Text(
+                  'Kirim Pembayaran',
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -102,11 +129,5 @@ class _PembayaranFormState extends State<PembayaranForm> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    descriptionController.dispose();
-    super.dispose();
   }
 }

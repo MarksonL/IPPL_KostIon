@@ -13,4 +13,9 @@ class MemberServices {
     db.add(body);
     return true;
   }
+
+  Stream<DocumentSnapshot> detailRent(String docId) {
+    final dataStream = db.doc(docId).snapshots();
+    return dataStream;
+  }
 }

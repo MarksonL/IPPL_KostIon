@@ -66,12 +66,16 @@ class _RentMemberScreenState extends State<RentMemberScreen> {
                     ],
                   ),
                 ),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RentDetailPage(id: item.id),
-                  ),
-                ),
+                onTap: () {
+                  if (item['approved']) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RentDetailPage(id: item.id),
+                      ),
+                    );
+                  }
+                },
               );
             },
           );
