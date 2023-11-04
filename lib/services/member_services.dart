@@ -13,19 +13,19 @@ class MemberServices {
 
   // CREATE: tambah data member
   bool addData(Map<String, dynamic> body) {
-    bool res = false;
-    final isSubmit = db
-        .where('kos_id', isEqualTo: body['kos_id'])
-        .count()
-        .get()
-        .then((value) {
-      if (value.count > 0) {
-        res = false;
-      } else {
-        db.add(body);
-        res = true;
-      }
-    });
-    return res;
+    // bool res = false;
+    // final isSubmit = db
+    //     .where('kos_id', isEqualTo: body['kos_id'])
+    //     .count()
+    //     .get()
+    //     .then((value) {
+    //   if (value.count > 0) {
+    //     res = false;
+    //   } else {
+    //   }
+    // });
+    db.add(body);
+    return true;
+    // return res;
   }
 }

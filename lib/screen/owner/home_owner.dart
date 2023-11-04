@@ -6,8 +6,10 @@ import 'package:kostlon/screen/auth.dart';
 import 'package:kostlon/screen/owner/home/home_owner.dart';
 import 'package:kostlon/screen/owner/home/payment_owner.dart';
 import 'package:kostlon/screen/owner/home/profile_owner.dart';
+import 'package:kostlon/screen/owner/home/request_owner.dart';
 import 'package:kostlon/screen/owner/home/rules_owner.dart';
 import 'package:kostlon/screen/owner/kos/kos_form.dart';
+import 'package:kostlon/screen/owner/member.dart';
 import 'package:kostlon/screen/owner/rule/rule_form.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
@@ -24,10 +26,15 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
   final List<Widget> _widgetOptions = <Widget>[
     HomeOwnerScreen(),
     PaymentOwnerScreen(),
-    RulesOwnerScreen(),
+    RequestOwnerScreen(),
     ProfileOwnerScreen()
   ];
 
+  final List<Widget> _iconOptions = <Widget>[
+    Icon(Icons.add),
+    Icon(Icons.add),
+    Icon(Icons.people),
+  ];
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -73,12 +80,12 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const OwnerRuleFormPage()),
+                          builder: (context) => const MemberListPage()),
                     );
                   default:
                 }
               },
-              child: Icon(Icons.add),
+              child: _iconOptions[_selectedIndex],
             )
           : null,
       bottomNavigationBar: BottomNavigationBar(
@@ -92,8 +99,8 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
             label: 'Pembayaran',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.gavel),
-            label: 'Peraturan',
+            icon: Icon(Icons.add_alert),
+            label: 'Permintan Kos',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
