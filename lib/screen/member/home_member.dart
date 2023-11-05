@@ -58,6 +58,7 @@ class _HomeMemberPageState extends State<HomeMemberPage> {
                         ),
                         TextButton(
                           onPressed: () async {
+                            Navigator.of(context).pop();
                             await FirebaseAuth.instance.signOut();
                             Navigator.pushReplacement(
                               context,
