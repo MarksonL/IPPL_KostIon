@@ -107,7 +107,7 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
             label: 'Permintan Kos',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_alert),
+            icon: Icon(Icons.note_alt_outlined),
             label: 'Laporan',
           ),
           BottomNavigationBarItem(
