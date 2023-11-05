@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kostlon/screen/auth.dart';
+import 'package:kostlon/utils/color_theme.dart';
 
 class ResetPasswordPage extends StatefulWidget {
   @override
@@ -29,9 +30,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Reset Password Successful'),
+          title: const Text('Pengaturan Ulang Kata Sandi Berhasil'),
           content: const Text(
-              'An email with instructions to reset your password has been sent.'),
+              'Email telah dikirimkan untuk mengatur ulang kata sandi anda.'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -71,13 +72,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reset Password'),
+        backgroundColor: AppColor.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
                 'Enter your email to reset your password',
@@ -99,6 +101,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _resetPassword,
+                style:
+                    ElevatedButton.styleFrom(backgroundColor: AppColor.primary),
                 child: const Text('Reset Password'),
               ),
             ],

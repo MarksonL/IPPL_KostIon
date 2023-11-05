@@ -87,7 +87,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Silahkan Mendaftar Akun',
                 style: TextStyle(
                   fontSize: 25,

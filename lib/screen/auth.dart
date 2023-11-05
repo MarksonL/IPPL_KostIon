@@ -42,6 +42,15 @@ class _LoginPageState extends State<LoginPage> {
             builder: (context) {
               return AlertDialog(
                 title: Text("Akun anda belum terverifikasi"),
+                content: Text(
+                    "Silakan lakukan verifikasi akun melalui email yang telah dikirimkan"),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("Ok"))
+                ],
               );
             });
       }
@@ -51,7 +60,16 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Kredensial tidak ditemukan"),
+            title: Text("Akun tidak ditemukan"),
+            content: Text(
+                "Silakan periksa kembali alamat email dan kata sandi anda karena akun yang anda masukkan tidak terdaftar di sistem"),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Ok"))
+            ],
           );
         },
       );
@@ -97,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(
+              const Center(
                 child: Text(
                   'KostIon',
                   style: TextStyle(
