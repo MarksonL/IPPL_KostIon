@@ -92,7 +92,7 @@ class _RentDetailPageState extends State<RentDetailPage> {
                       "nama_kos": item['name'],
                     },
                   ),
-                  // ActionKeluar(),
+                  ActionKeluar(),
                 ],
               ),
             ),
