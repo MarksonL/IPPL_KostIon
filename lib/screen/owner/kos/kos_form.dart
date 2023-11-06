@@ -38,7 +38,25 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
 
   // 1. upload gambar untuk mendapatkan url
   void submit(BuildContext context) async {
-    if (_selectedImage != null) {
+    if (_selectedImage == null) {
+      // Display an error message when no image is selected.
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Mohon untuk memilih gambar kost'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    } else if (_namaController.text.isEmpty ||
+        _alamatController.text.isEmpty ||
+        _hargaController.text.isEmpty) {
+      // Display an error message when any of the required fields is empty.
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Mohon untuk mengisi form dengan benar'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    } else {
       final fileRef = storageRef.child('kos/${_selectedImage!.name}');
       final File file = File(_selectedImage!.path);
       context.loaderOverlay.show();

@@ -62,13 +62,46 @@ class _RegistrationPageState extends State<RegistrationPage> {
               );
             },
           );
+        } else if (e.code == 'invalid-email') {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Akun Tidak Valid'),
+                content: Text(
+                    'Silakan gunakan alamat email dengan format yang benar (Contoh: pengguna@gmail.com)'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Tutup'),
+                  ),
+                ],
+              );
+            },
+          );
         } else {
-          // Penanganan kesalahan lainnya
-          print('Kesalahan saat mendaftar: ${e.message}');
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Terjadi Kesalahan'),
+                content: Text(
+                    'Mohon perhatikan kembali dan perbaiki data yang anda masukkan'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Tutup'),
+                  ),
+                ],
+              );
+            },
+          );
+          print('Kesalahan saat mendaftar: ${e.code}');
         }
-      } catch (e) {
-        // Penanganan kesalahan lainnya
-        print('Kesalahan saat mendaftar: $e');
       }
     }
   }

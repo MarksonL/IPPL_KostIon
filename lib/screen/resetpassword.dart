@@ -20,7 +20,25 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         );
         _showSuccessDialog();
       } catch (e) {
-        _showErrorDialog('Error', e.toString());
+        // _showErrorDialog('Error', e.toString());
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Terjadi Kesalahan"),
+              content: Text(
+                  "Silakan periksa kembali format email yang anda masukkan"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       }
     }
   }
@@ -30,9 +48,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Pengaturan Ulang Kata Sandi Berhasil'),
+          title: const Text('Email dikirim!'),
           content: const Text(
-              'Email telah dikirimkan untuk mengatur ulang kata sandi anda.'),
+              'Email telah dikirimkan. Silakan cek email anda untuk mengatur ulang kata sandi.'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -71,7 +89,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reset Password'),
+        title: const Text('Atur Ulang Kata Sandi'),
         backgroundColor: AppColor.primary,
       ),
       body: Padding(
@@ -82,7 +100,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
-                'Enter your email to reset your password',
+                'Masukkan alamat email anda untuk mengatur ulang kata sandi',
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -103,7 +121,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 onPressed: _resetPassword,
                 style:
                     ElevatedButton.styleFrom(backgroundColor: AppColor.primary),
-                child: const Text('Reset Password'),
+                child: const Text('Kirim'),
               ),
             ],
           ),

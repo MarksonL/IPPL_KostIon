@@ -126,20 +126,31 @@ class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
           ),
           actions: [
             TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Batal')),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Batal'),
+            ),
             TextButton(
-                onPressed: () {
+              onPressed: () {
+                if (_inputFasilitas.text.isNotEmpty) {
                   kosServices.addFasilitas({
                     'name': _inputFasilitas.text,
                     "created": Timestamp.now()
                   }, widget.id);
                   Navigator.pop(context);
                   _inputFasilitas.clear();
-                },
-                child: Text('Simpan')),
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Nama fasilitas tidak boleh kosong.'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                }
+              },
+              child: Text('Simpan'),
+            ),
           ],
         );
       },
@@ -158,20 +169,31 @@ class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
           ),
           actions: [
             TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Batal')),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Batal'),
+            ),
             TextButton(
-                onPressed: () {
+              onPressed: () {
+                if (_inputPeraturan.text.isNotEmpty) {
                   kosServices.addPeraturan({
                     'name': _inputPeraturan.text,
                     "created": Timestamp.now()
                   }, widget.id);
                   Navigator.pop(context);
-                  _inputFasilitas.clear();
-                },
-                child: Text('Simpan')),
+                  _inputPeraturan.clear();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Nama peraturan tidak boleh kosong.'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                }
+              },
+              child: Text('Simpan'),
+            ),
           ],
         );
       },

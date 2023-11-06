@@ -34,15 +34,15 @@ class _StartProfilePageState extends State<StartProfilePage> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Tutup dialog konfirmasi
-                _saveProfile();
               },
-              child: Text('Ya'),
+              child: Text('Tidak'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Tutup dialog konfirmasi
+                Navigator.of(context).pop();
+                _saveProfile(); // Tutup dialog konfirmasi
               },
-              child: Text('Tidak'),
+              child: Text('Ya'),
             ),
           ],
         );
@@ -56,30 +56,49 @@ class _StartProfilePageState extends State<StartProfilePage> {
       if (user != null) {
         String uid = user.uid;
         String name = _nameController.text;
+        if (name.isEmpty) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Terjadi Kesalahan'),
+                content: Text('Mohon untuk dapat mengisi nama anda'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Tutup dialog sukses
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          final userRef = FirebaseFirestore.instance.collection("users");
+          await userRef.doc(uid).set({'name': name, 'role': _selectedRole});
 
-        final userRef = FirebaseFirestore.instance.collection("users");
-        await userRef.doc(uid).set({'name': name, 'role': _selectedRole});
-
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('Profil Berhasil Disimpan'),
-              content: Text(
-                  'Silakan lakukan verifikasi akun melalui link yang terdapat pada email yang telah dikirimkan untuk menyelesaikan proses verifikasi akun'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Tutup dialog sukses
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Profil Berhasil Disimpan'),
+                content: Text(
+                    'Silakan lakukan verifikasi akun melalui link yang terdapat pada email yang telah dikirimkan untuk menyelesaikan proses verifikasi akun'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Tutup dialog sukses
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       }
     } catch (e) {
       print('Kesalahan: $e');
@@ -98,7 +117,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Isi Profil Anda',
               style: TextStyle(
                 fontSize: 20,
@@ -119,7 +138,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
                   )),
             ),
             SizedBox(height: 20),
-            Text(
+            const Text(
               'Pilih Peran:',
               style: TextStyle(
                   fontSize: 15,
@@ -135,7 +154,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
                   onChanged: _handleRoleChange,
                   activeColor: AppColor.primary,
                 ),
-                Text(
+                const Text(
                   'Member',
                   style: TextStyle(fontSize: 12, color: Colors.black),
                 ),
@@ -146,7 +165,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
                   onChanged: _handleRoleChange,
                   activeColor: AppColor.primary,
                 ),
-                Text(
+                const Text(
                   'Owner',
                   style: TextStyle(fontSize: 12, color: Colors.black),
                 ),
@@ -160,17 +179,20 @@ class _StartProfilePageState extends State<StartProfilePage> {
             // Expanded(
             //   child: Container(), // Spacer untuk membuat tombol di tengah
             // ),
-            ElevatedButton(
-              onPressed: _submitProfile,
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+            Center(
+              child: ElevatedButton(
+                onPressed: _submitProfile,
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  elevation: 0,
+                  backgroundColor: AppColor.primary,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 ),
-                elevation: 0,
-                backgroundColor: AppColor.primary,
-                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Text('Simpan Profil'),
               ),
-              child: Text('Simpan Profil'),
             ),
           ],
         ),

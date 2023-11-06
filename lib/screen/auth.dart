@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
           return AlertDialog(
             title: Text("Akun tidak ditemukan"),
             content: Text(
-                "Silakan periksa kembali alamat email dan kata sandi anda karena akun yang anda masukkan tidak terdaftar di sistem"),
+                "Silakan periksa kembali alamat email dan kata sandi anda karena akun yang anda masukkan tidak valid"),
             actions: <Widget>[
               TextButton(
                   onPressed: () {
@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
       body: LoaderOverlay(
         useDefaultLoading: false,
         overlayColor: Colors.black12,
-        overlayWidget: Center(
+        overlayWidget: const Center(
           child: SpinKitCircle(
             color: Colors.black,
             size: 50.0,
@@ -197,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ResetPasswordPage(),
