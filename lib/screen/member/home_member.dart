@@ -88,12 +88,12 @@ class _HomeMemberPageState extends State<HomeMemberPage> {
             label: 'Cari',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
+            icon: Icon(Icons.house),
             label: 'Kos Saya',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Pembayaran',
+            icon: Icon(Icons.history),
+            label: 'History',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
