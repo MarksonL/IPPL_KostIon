@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 class KosServices {
   // final User? user = FirebaseAuth.instance.currentUser;
   final db = FirebaseFirestore.instance.collection('kos');
+  final db01 = FirebaseFirestore.instance.collection("users");
   final storage = FirebaseStorage.instance;
 
   // READ: ambil data kos
@@ -50,6 +51,17 @@ class KosServices {
         .collection('peraturan')
         .orderBy('created', descending: true)
         .snapshots();
+  }
+
+  Future<String> getNomorWA(String kosId) async {
+    final snapshot = await db.doc(kosId).get();
+    final snapshot2 = await db01.doc(snapshot['owner_id']).get();
+    return snapshot2['nomorWa'];
+    // return data2['nomorWa'];
+    // print(data);
+    // return snapshot;
+    // dynamic ownerID = snapshot.data()?.owner_id;
+    // return db01.doc
   }
 
   // ADD: tambah peraturan

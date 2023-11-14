@@ -8,6 +8,7 @@ import 'package:kostlon/screen/member/kost/builder/member_fasilitas_builder.dart
 import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/services/member_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MemberKostDetail extends StatefulWidget {
   const MemberKostDetail({
@@ -69,13 +70,37 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
             }
           },
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => ajukanSewa(context),
-          label: Text("Ajukan Sewa"),
-          backgroundColor: AppColor.primary,
-        ),
+        floatingActionButton:
+            Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+          FloatingActionButton.extended(
+            onPressed: () => ajukanSewa(context),
+            label: Text("Ajukan Sewa"),
+            backgroundColor: AppColor.primary,
+          ),
+          FloatingActionButton.extended(
+            onPressed: () => _openWhatsApp(),
+            label: Text("Buka Whatsapp"),
+            backgroundColor: AppColor.primary,
+          )
+        ]),
       ),
     );
+  }
+
+  // Function to open WhatsApp using url_launcher
+  Future<void> _openWhatsApp() async {
+    // Replace the phone number with the desired number
+    String phoneNumber = "123456789";
+
+    // Create the WhatsApp URL
+    String url = "https://wa.me/$phoneNumber";
+
+    // Check if the WhatsApp app is installed and launch the URL
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Future ajukanSewa(BuildContext context) {
