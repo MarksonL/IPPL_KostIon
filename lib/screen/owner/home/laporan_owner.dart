@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kostlon/screen/owner/kos/laporan_detail.dart';
 import 'package:kostlon/services/laporan_services.dart';
 
 class LaporanOwnerScreen extends StatefulWidget {
@@ -34,6 +35,17 @@ class _LaporanOwnerScreenState extends State<LaporanOwnerScreen> {
                 title:
                     Text("${item['kerusakan']} - Kamar (${item['no_kamar']})"),
                 subtitle: Text("${item['deskripsi']}"),
+                onTap: () {
+                  final String id = items[index].id;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LaporanDetail(
+                          // id: id,
+                          ),
+                    ),
+                  );
+                },
               );
             },
           );
