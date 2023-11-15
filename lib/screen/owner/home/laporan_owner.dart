@@ -41,8 +41,8 @@ class _LaporanOwnerScreenState extends State<LaporanOwnerScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => LaporanDetail(
-                          // id: id,
-                          ),
+                        id: id,
+                      ),
                     ),
                   );
                 },

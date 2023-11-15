@@ -57,7 +57,7 @@ class _LaporanKerusakanFormState extends State<LaporanKerusakanForm> {
     laporanServices.store({
       "member_id": user!.uid,
       "image": urlImage,
-      "status": "new",
+      "status": "dilaporkan", //status awal
       "no_kamar": _nomorKamarController.text,
       "kerusakan": _judulKerusakanController.text,
       "deskripsi": _keteranganController.text,
