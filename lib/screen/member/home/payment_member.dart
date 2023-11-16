@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kostlon/screen/member/kost/laporan_detail_member.dart';
+import 'package:kostlon/screen/member/kost/paymentdetail_member.dart';
 import 'package:kostlon/services/laporan_services.dart';
 import 'package:kostlon/services/payment_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
@@ -55,6 +57,17 @@ class _PaymentMemberScreenState extends State<PaymentMemberScreen> {
                               "Jumlah: ${item['pembayaran']}",
                               style: TextStyle(fontSize: 16),
                             ),
+                            onTap: () {
+                              final String id = items[index].id;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PaymentDetailMember(
+                                    id: id,
+                                  ),
+                                ),
+                              );
+                            },
                           );
                         },
                       );
@@ -81,8 +94,25 @@ class _PaymentMemberScreenState extends State<PaymentMemberScreen> {
 
                           return ListTile(
                             title: Text(
-                                "${item['kerusakan']} - Kamar (${item['no_kamar']})"),
-                            subtitle: Text("${item['deskripsi']}"),
+                                "${item['nama_kos']} - Kamar (${item['no_kamar']})"),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Laporan: ${item['kerusakan']}"),
+                                Text("Status Laporan: ${item['status']}"),
+                              ],
+                            ),
+                            onTap: () {
+                              final String id = items[index].id;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LaporanDetailMember(
+                                    id: id,
+                                  ),
+                                ),
+                              );
+                            },
                           );
                         },
                       );

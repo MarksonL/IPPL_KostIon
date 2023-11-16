@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/services/payment_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
@@ -26,6 +27,7 @@ class _PembayaranFormState extends State<PembayaranForm> {
   XFile? _selectedImage;
 
   PaymentServices paymentServices = PaymentServices();
+  final KosServices kosServices = KosServices();
 
   Future<void> _getImage() async {
     final picker = ImagePicker();
@@ -82,7 +84,62 @@ class _PembayaranFormState extends State<PembayaranForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Kotak informasi rincian pembayaran
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[400],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Rincian Pembayaran:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    StreamBuilder(
+                      // Menggunakan StreamBuilder untuk menampilkan data yang berubah dari Firestore
+                      stream: kosServices.getDetail(widget.kos[
+                          'kos_id']), // Anggap 'kos_id' adalah identifier unik untuk 'kos' Anda
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return Text('Data tidak ditemukan.');
+                        } else {
+                          // Jika data tersedia, tampilkan
+                          var kosData =
+                              snapshot.data!.data() as Map<String, dynamic>;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Nama Kos: ${kosData['name']}'),
+                              Text('Harga Sewa/bulan: ${kosData['price']}'),
+                              // Tambahkan detail lain sesuai kebutuhan
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(height: 8),
+              Text(
+                'Formulir Pembayaran:',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 15),
               Center(
                 child: GestureDetector(
                   onTap: _getImage,
@@ -117,6 +174,10 @@ class _PembayaranFormState extends State<PembayaranForm> {
                 onPressed: () {
                   submit(context);
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      AppColor.primary, // Warna latar belakang tombol
+                ),
                 child: Text(
                   'Kirim Pembayaran',
                   style: TextStyle(
@@ -124,6 +185,8 @@ class _PembayaranFormState extends State<PembayaranForm> {
                   ),
                 ),
               ),
+              SizedBox(height: 16),
+              // Kotak informasi rincian pembayaran
             ],
           ),
         ),
