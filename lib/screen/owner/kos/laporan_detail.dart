@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/screen/owner/kos/components/list_text.dart';
 import 'package:kostlon/services/laporan_services.dart';
+import 'package:kostlon/utils/color_theme.dart';
 
 class LaporanDetail extends StatefulWidget {
   const LaporanDetail({
@@ -25,6 +26,7 @@ class _LaporanDetail extends State<LaporanDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: AppColor.primary,
           title: Text('Detail Laporan'),
           elevation: 0,
         ),
@@ -63,59 +65,66 @@ class _LaporanDetail extends State<LaporanDetail> {
                           label: 'Status Kerusakan',
                           content: item['status'],
                         ),
-                        ElevatedButton(
-                          onPressed: isLoading
-                              ? null
-                              : () async {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
+                        Container(
+                          width: 0,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: isLoading
+                                ? null
+                                : () async {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
 
-                                  // Toggling status kerusakan antara "dalam pengerjaan" dan "selesai"
-                                  String newStatus =
-                                      status == 'dalam pengerjaan'
-                                          ? 'selesai'
-                                          : 'dalam pengerjaan';
+                                    // Toggling status kerusakan antara "dalam pengerjaan" dan "selesai"
+                                    String newStatus =
+                                        status == 'dalam pengerjaan'
+                                            ? 'selesai'
+                                            : 'dalam pengerjaan';
 
-                                  try {
-                                    // Update status di Firestore
-                                    await laporanServices.updateStatus(
-                                        widget.id, newStatus);
+                                    try {
+                                      // Update status di Firestore
+                                      await laporanServices.updateStatus(
+                                          widget.id, newStatus);
 
-                                    // Dapatkan ulang data dari Firestore
-                                    final updatedData = await laporanServices
-                                        .getDetail(widget.id);
-                                    if (updatedData != null) {
+                                      // Dapatkan ulang data dari Firestore
+                                      final updatedData = await laporanServices
+                                          .getDetail(widget.id);
+                                      if (updatedData != null) {
+                                        setState(() {
+                                          status = newStatus;
+                                        });
+                                      }
+                                    } catch (e) {
+                                      debugPrint('Terjadi kesalahan: $e');
+                                      // Tampilkan pesan kesalahan kepada pengguna
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Terjadi kesalahan. Coba lagi nanti.'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    } finally {
                                       setState(() {
-                                        status = newStatus;
+                                        isLoading = false;
                                       });
                                     }
-                                  } catch (e) {
-                                    debugPrint('Terjadi kesalahan: $e');
-                                    // Tampilkan pesan kesalahan kepada pengguna
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            'Terjadi kesalahan. Coba lagi nanti.'),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  } finally {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                  }
-                                },
-                          child: isLoading
-                              ? CircularProgressIndicator()
-                              : Text(status == 'dalam pengerjaan'
-                                  ? 'Ubah ke Selesai'
-                                  : 'Ubah ke Dalam Pengerjaan'),
+                                  },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColor.primary),
+                            child: isLoading
+                                ? CircularProgressIndicator()
+                                : Text(status == 'dalam pengerjaan'
+                                    ? 'Ubah ke Selesai'
+                                    : 'Ubah ke Dalam Pengerjaan'),
+                          ),
                         ),
                       ],
                     );
                   } else {
-                    return Center(
+                    return const Center(
                       child: Text('Data Kosong'),
                     );
                   }

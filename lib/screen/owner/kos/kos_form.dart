@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:kostlon/utils/color_theme.dart';
 
 import 'package:kostlon/services/kos_services.dart';
 
@@ -39,7 +40,7 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
   // 1. upload gambar untuk mendapatkan url
   void submit(BuildContext context) async {
     if (_selectedImage == null) {
-      // Display an error message when no image is selected.
+      // Tampilkan pesan kesalahan jika tidak ada gambar yang dipilih.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Mohon untuk memilih gambar kost'),
@@ -49,7 +50,7 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
     } else if (_namaController.text.isEmpty ||
         _alamatController.text.isEmpty ||
         _hargaController.text.isEmpty) {
-      // Display an error message when any of the required fields is empty.
+      // Tampilkan pesan kesalahan jika salah satu kolom yang dibutuhkan kosong.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Mohon untuk mengisi form dengan benar'),
@@ -65,10 +66,16 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
         final url = await fileRef.getDownloadURL();
         storeData(context, url.toString());
         debugPrint(url.toString());
-        context.loaderOverlay.hide();
       } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Terjadi kesalahan saat menyimpan data'),
+            duration: Duration(seconds: 1),
+          ),
+        );
+        debugPrint('Terjadi kesalahan: $e');
+      } finally {
         context.loaderOverlay.hide();
-        debugPrint('terjadi kesalahan');
       }
     }
   }
@@ -124,6 +131,7 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColor.primary,
         title: Text("Formulir tambah kos"),
         centerTitle: true,
         elevation: 0,
@@ -221,6 +229,8 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
               child: ElevatedButton(
                 onPressed: () => submit(context),
                 child: Text('Simpan'),
+                style:
+                    ElevatedButton.styleFrom(backgroundColor: AppColor.primary),
               ),
             ),
           ],

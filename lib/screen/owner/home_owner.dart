@@ -23,7 +23,6 @@ class HomeOwnerPage extends StatefulWidget {
 
 class _HomeOwnerPageState extends State<HomeOwnerPage> {
   int _selectedIndex = 0;
-
   final List<Widget> _widgetOptions = <Widget>[
     HomeOwnerScreen(),
     PaymentOwnerScreen(),
@@ -49,6 +48,7 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColor.primary,
         title: Text("Kostlon"),
         centerTitle: true,
         elevation: 0,
@@ -113,6 +113,7 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
                   default:
                 }
               },
+              backgroundColor: AppColor.primary,
               child: _iconOptions[_selectedIndex],
             )
           : null,
@@ -140,7 +141,7 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.indigo,
+        selectedItemColor: Colors.amber,
         unselectedItemColor: AppColor.light,
         onTap: _onItemTapped,
       ),

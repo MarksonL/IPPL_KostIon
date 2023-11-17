@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/screen/owner/kos/components/peraturan_builder.dart';
 import 'package:kostlon/services/kos_services.dart';
+import 'package:kostlon/utils/color_theme.dart';
 
 import 'components/fasilitas_builder.dart';
 import 'components/list_text.dart';
@@ -30,6 +31,7 @@ class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColor.primary,
         title: Text('Detail Kos'),
         elevation: 0,
       ),
