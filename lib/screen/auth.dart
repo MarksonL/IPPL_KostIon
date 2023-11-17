@@ -19,19 +19,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late var wack;
-
-  void initState() {
-    noWa();
-  }
-
-  Future<void> noWa() async {
-    final monyet = await KosServices().getNomorWA("tJN0RrMTDUFtO8wvnF5O");
-    setState(() {
-      wack = monyet;
-    });
-  }
-
   final db = FirebaseFirestore.instance;
   final User? user = FirebaseAuth.instance.currentUser;
 

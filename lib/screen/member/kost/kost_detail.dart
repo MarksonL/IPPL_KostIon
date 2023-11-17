@@ -9,6 +9,7 @@ import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/services/member_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class MemberKostDetail extends StatefulWidget {
   const MemberKostDetail({
@@ -27,9 +28,21 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
   TextEditingController _tanggalContainer = TextEditingController();
   DateTime? _tanggal;
   Map<String, dynamic> kos = {};
-
   final KosServices kosServices = KosServices();
   final MemberServices memberServices = MemberServices();
+
+  // late var phoneNumber;
+
+  // void initState() {
+  //   noWa();
+  // }
+
+  // Future<void> noWa() async {
+  //   final monyet = await KosServices().getNomorWA(widget.id.toString());
+  //   setState(() {
+  //     phoneNumber = monyet;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +90,7 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
             label: Text("Ajukan Sewa"),
             backgroundColor: AppColor.primary,
           ),
+          SizedBox(height: 15),
           FloatingActionButton.extended(
             onPressed: () => _openWhatsApp(),
             label: Text("Buka Whatsapp"),
@@ -87,20 +101,19 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
     );
   }
 
-  // Function to open WhatsApp using url_launcher
   Future<void> _openWhatsApp() async {
-    // Replace the phone number with the desired number
-    String phoneNumber = "123456789";
-
     // Create the WhatsApp URL
+    final phoneNumber = await KosServices().getNomorWA(widget.id.toString());
     String url = "https://wa.me/$phoneNumber";
 
-    // Check if the WhatsApp app is installed and launch the URL
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+    launchUrlString(url);
+
+    // // Check if the WhatsApp app is installed and launch the URL
+    // if (await canLaunchUrlString(url)) {
+    //   await launchUrlString(url);
+    // } else {
+    //   throw 'Could not launch $url';
+    // }
   }
 
   Future ajukanSewa(BuildContext context) {

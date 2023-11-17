@@ -14,6 +14,7 @@ class StartProfilePage extends StatefulWidget {
 class _StartProfilePageState extends State<StartProfilePage> {
   String _selectedRole = 'member';
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nomorWa = TextEditingController();
 
   void _handleRoleChange(String? value) {
     setState(() {
@@ -56,6 +57,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
       if (user != null) {
         String uid = user.uid;
         String name = _nameController.text;
+        String nomorWa = _nomorWa.text;
         if (name.isEmpty) {
           showDialog(
             context: context,
@@ -76,7 +78,9 @@ class _StartProfilePageState extends State<StartProfilePage> {
           );
         } else {
           final userRef = FirebaseFirestore.instance.collection("users");
-          await userRef.doc(uid).set({'name': name, 'role': _selectedRole});
+          await userRef
+              .doc(uid)
+              .set({'name': name, 'role': _selectedRole, 'nomorWa': nomorWa});
 
           showDialog(
             context: context,
@@ -129,6 +133,20 @@ class _StartProfilePageState extends State<StartProfilePage> {
               controller: _nameController,
               decoration: InputDecoration(
                   labelText: 'Nama Pengguna',
+                  filled: true,
+                  fillColor: Colors.white,
+                  labelStyle: TextStyle(color: AppColor.secondary),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: AppColor.primary),
+                  )),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: _nomorWa,
+              decoration: InputDecoration(
+                  labelText: 'Nomor WhatsApp',
+                  hintText: 'contoh: 62812-3456-7890 (gunakan kode negara)',
                   filled: true,
                   fillColor: Colors.white,
                   labelStyle: TextStyle(color: AppColor.secondary),
