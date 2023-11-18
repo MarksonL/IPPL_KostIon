@@ -113,7 +113,7 @@ class _RequestOwnerScreenState extends State<RequestOwnerScreen> {
                             },
                             icon: Icon(
                               Icons.cancel,
-                              color: Colors.grey[400],
+                              color: Colors.red[400],
                             ),
                           ),
                         if (type == 'keluar') // Jika permintaan keluar
@@ -133,7 +133,7 @@ class _RequestOwnerScreenState extends State<RequestOwnerScreen> {
                             },
                             icon: Icon(
                               Icons.cancel,
-                              color: Colors.grey[400],
+                              color: Colors.red[400],
                             ),
                           )
                       ],

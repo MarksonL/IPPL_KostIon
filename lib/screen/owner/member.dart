@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/services/owner_services.dart';
+import 'package:kostlon/utils/color_theme.dart';
 
 class MemberListPage extends StatefulWidget {
   const MemberListPage({super.key});
@@ -26,6 +27,7 @@ class _MemberListPageState extends State<MemberListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Member'),
+        backgroundColor: AppColor.primary,
         centerTitle: true,
         elevation: 0,
       ),

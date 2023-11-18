@@ -194,6 +194,32 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
   }
 
   void _submitSewa(BuildContext context) {
+    if (_durasi.text.isEmpty || _tanggalContainer.text.isEmpty) {
+      // Menampilkan pemberitahuan jika ada field yang kosong
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Center(
+              child: Text(
+                'Mohon Isi Semua Field',
+                style: TextStyle(fontSize: 15),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Menutup dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     User? user = FirebaseAuth.instance.currentUser;
     Map<String, dynamic> body = {
       'user_id': user!.uid,
@@ -209,15 +235,42 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
 
     if (res) {
       Navigator.pop(context);
+      // Menampilkan pemberitahuan setelah sukses submit
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Center(child: Text('Pengajuan berhasil')),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Menutup dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
     } else {
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(
-              'Pengajuan tidak dapat dilanjutkan',
-              style: TextStyle(fontSize: 12),
+            title: Center(
+              child: Text(
+                'Pengajuan tidak dapat dilanjutkan',
+                style: TextStyle(fontSize: 12),
+              ),
             ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Menutup dialog
+                },
+              ),
+            ],
           );
         },
       );
