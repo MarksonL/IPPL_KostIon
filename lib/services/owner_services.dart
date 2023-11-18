@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OwnerServices {
   final db = FirebaseFirestore.instance.collection('kos_member');
+  final db01 = FirebaseFirestore.instance.collection('kos');
 
   // READ: ambil data kos
   Stream<QuerySnapshot> list(String ownerId) {
@@ -21,11 +22,16 @@ class OwnerServices {
     return dataStream;
   }
 
-  void approve(String docId) {
+  void approveMasuk(String docId) {
     db.doc(docId).update({'approved': true});
   }
 
-  void reject(String docId) {
+  void rejectMasuk(String docId) {
+    db.doc(docId).delete();
+  }
+
+  void approveKeluar(String docId) {
+    db.doc(docId).update({'approved': false});
     db.doc(docId).delete();
   }
 }

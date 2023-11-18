@@ -67,7 +67,7 @@ class _OwnerKosDetailPageState extends State<OwnerKosDetailPage> {
                       content: item['price'].toString(),
                     ),
                     ListText(
-                      label: 'Jumlah Kamar',
+                      label: 'Jumlah Kamar Tersedia',
                       content: item['jumlah'].toString(),
                     ),
                     Container(

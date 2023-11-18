@@ -68,7 +68,7 @@ class _RentalApplicationFormState extends State<RentalApplicationForm> {
     setState(() {
       _nameController.clear();
       _phoneNumberController.clear();
-      _jenisKelamin = 'Lakilaki';
+      _jenisKelamin = 'Laki-laki';
       _pekerjaanController.clear();
       _durasiSewa = 1;
     });

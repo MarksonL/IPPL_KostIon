@@ -1,24 +1,22 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:kostlon/screen/member/kost/builder/member_fasilitas_builder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/services/member_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+import 'package:kostlon/screen/member/kost/builder/member_fasilitas_builder.dart';
 
 class MemberKostDetail extends StatefulWidget {
   const MemberKostDetail({
-    super.key,
+    Key? key,
     required this.id,
-  });
+  }) : super(key: key);
 
-  // variable parameter
   final String id;
+
   @override
   State<MemberKostDetail> createState() => _MemberKostDetailState();
 }
@@ -30,19 +28,6 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
   Map<String, dynamic> kos = {};
   final KosServices kosServices = KosServices();
   final MemberServices memberServices = MemberServices();
-
-  // late var phoneNumber;
-
-  // void initState() {
-  //   noWa();
-  // }
-
-  // Future<void> noWa() async {
-  //   final monyet = await KosServices().getNomorWA(widget.id.toString());
-  //   setState(() {
-  //     phoneNumber = monyet;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -58,62 +43,65 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
         body: StreamBuilder<DocumentSnapshot>(
           stream: kosServices.getDetail(widget.id),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              DocumentSnapshot? item = snapshot.data;
-              kos = {
-                "name": item!['name'],
-                "alamat": item!['alamat'],
-                "owner": item!['owner'],
-                "owner_id": item!['owner_id'],
-                "price": item!['price'].toString(),
-              };
-              return BodyDetail(
-                id: item!.id,
-                name: item!['name'],
-                alamat: item!['alamat'],
-                owner: item!['owner'],
-                price: item!['price'].toString(),
-                image: item!['image'],
-                kosServices: KosServices(),
-              );
-            } else {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error loading data'),
+              );
+            } else if (!snapshot.hasData || snapshot.data == null) {
+              return Center(
+                child: Text('Data not found'),
+              );
+            } else {
+              DocumentSnapshot item = snapshot.data!;
+              kos = {
+                "name": item['name'],
+                "alamat": item['alamat'],
+                "owner": item['owner'],
+                "owner_id": item['owner_id'],
+                "price": item['price'].toString(),
+              };
+
+              return BodyDetail(
+                id: item.id,
+                name: item['name'],
+                alamat: item['alamat'],
+                owner: item['owner'],
+                price: item['price'].toString(),
+                image: item['image'],
+                kosServices: KosServices(),
               );
             }
           },
         ),
-        floatingActionButton:
-            Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-          FloatingActionButton.extended(
-            onPressed: () => ajukanSewa(context),
-            label: Text("Ajukan Sewa"),
-            backgroundColor: AppColor.primary,
-          ),
-          SizedBox(height: 15),
-          FloatingActionButton.extended(
-            onPressed: () => _openWhatsApp(),
-            label: Text("Buka Whatsapp"),
-            backgroundColor: AppColor.primary,
-          )
-        ]),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton.extended(
+              onPressed: () => ajukanSewa(context),
+              label: Text("Ajukan Sewa"),
+              backgroundColor: AppColor.primary,
+            ),
+            SizedBox(height: 15),
+            FloatingActionButton.extended(
+              onPressed: () => _openWhatsApp(),
+              label: Text("Buka Whatsapp"),
+              backgroundColor: AppColor.primary,
+            )
+          ],
+        ),
       ),
     );
   }
 
   Future<void> _openWhatsApp() async {
-    // Create the WhatsApp URL
     final phoneNumber = await KosServices().getNomorWA(widget.id.toString());
     String url = "https://wa.me/$phoneNumber";
 
     launchUrlString(url);
-
-    // // Check if the WhatsApp app is installed and launch the URL
-    // if (await canLaunchUrlString(url)) {
-    //   await launchUrlString(url);
-    // } else {
-    //   throw 'Could not launch $url';
-    // }
   }
 
   Future ajukanSewa(BuildContext context) {
@@ -132,46 +120,48 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
           ),
           content: Container(
             height: 200,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                'Durasi Sewa / Bulan',
-                style: TextStyle(fontSize: 12, color: AppColor.textPrimary),
-              ),
-              TextFormField(
-                controller: _durasi,
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty || value == 0) {
-                    return "Input tidak boleh kosong atau 0";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              Text(
-                'Tanggal Sewa',
-                style: TextStyle(fontSize: 12, color: AppColor.textPrimary),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: TextFormField(
-                      controller: _tanggalContainer,
-                      readOnly: true,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Durasi Sewa / Bulan',
+                  style: TextStyle(fontSize: 12, color: AppColor.textPrimary),
+                ),
+                TextFormField(
+                  controller: _durasi,
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty || value == "0") {
+                      return "Input tidak boleh kosong atau 0";
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Text(
+                  'Tanggal Sewa',
+                  style: TextStyle(fontSize: 12, color: AppColor.textPrimary),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      child: TextFormField(
+                        controller: _tanggalContainer,
+                        readOnly: true,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () => _pilihTanggal(context),
-                    icon: Icon(Icons.calendar_month),
-                  )
-                ],
-              )
-            ]),
+                    IconButton(
+                      onPressed: () => _pilihTanggal(context),
+                      icon: Icon(Icons.calendar_month),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
           actions: <Widget>[
             TextButton(
@@ -198,7 +188,7 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
     if (picked != null && picked != _tanggal) {
       setState(() {
         _tanggal = picked;
-        _tanggalContainer.text = picked.toString().split(" ")[0];
+        _tanggalContainer.text = DateFormat('yyyy-MM-dd').format(picked);
       });
     }
   }
@@ -207,13 +197,13 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
     User? user = FirebaseAuth.instance.currentUser;
     Map<String, dynamic> body = {
       'user_id': user!.uid,
-      'user_email': user!.email,
+      'user_email': user.email,
       'kos_id': widget.id,
       ...kos,
       'durasi_sewa': _durasi.text,
       'tanggal_mulai': _tanggalContainer.text,
       'approved': false,
-      'created_at': Timestamp.now()
+      'created_at': Timestamp.now(),
     };
     final res = memberServices.addData(body);
 
@@ -225,7 +215,7 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
         builder: (context) {
           return AlertDialog(
             title: Text(
-              'pengajuan tidak dapat dilanjutkan',
+              'Pengajuan tidak dapat dilanjutkan',
               style: TextStyle(fontSize: 12),
             ),
           );
@@ -236,15 +226,16 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
 }
 
 class BodyDetail extends StatelessWidget {
-  const BodyDetail(
-      {super.key,
-      required this.id,
-      this.name,
-      this.alamat,
-      this.owner,
-      this.price,
-      this.image,
-      required this.kosServices});
+  const BodyDetail({
+    Key? key,
+    required this.id,
+    this.name,
+    this.alamat,
+    this.owner,
+    this.price,
+    this.image,
+    required this.kosServices,
+  }) : super(key: key);
 
   final String id;
   final String? name;
@@ -252,7 +243,6 @@ class BodyDetail extends StatelessWidget {
   final String? owner;
   final String? price;
   final String? image;
-
   final KosServices kosServices;
 
   @override
@@ -264,9 +254,7 @@ class BodyDetail extends StatelessWidget {
             height: 200,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(
-                  "${image}",
-                ),
+                image: NetworkImage("${image}"),
                 fit: BoxFit.cover,
               ),
             ),
@@ -377,7 +365,13 @@ class BodyDetail extends StatelessWidget {
                 StreamBuilder(
                   stream: kosServices.peraturan(id),
                   builder: (context, snapshot) {
-                    if (snapshot.hasData) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error loading data'));
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return Center(child: Text('Data not found'));
+                    } else {
                       var items = snapshot.data!.docs;
 
                       return ListView.builder(
@@ -390,10 +384,6 @@ class BodyDetail extends StatelessWidget {
                             title: Text(item['name']),
                           );
                         },
-                      );
-                    } else {
-                      return Center(
-                        child: Text('Fasilitas kosong'),
                       );
                     }
                   },

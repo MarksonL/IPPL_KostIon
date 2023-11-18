@@ -1,9 +1,9 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kostlon/services/owner_services.dart';
-import 'package:kostlon/services/rule_services.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kostlon/utils/color_theme.dart';
 
 class RequestOwnerScreen extends StatefulWidget {
   const RequestOwnerScreen({super.key});
@@ -18,11 +18,41 @@ class _RequestOwnerScreenState extends State<RequestOwnerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColor.primary,
+          title: const Text('Permintaan Kost'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Masuk'),
+              Tab(text: 'Keluar'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            // Tab view untuk permintaan masuk
+            buildRequestList(user!.uid, 'masuk'),
+
+            // Tab view untuk permintaan keluar
+            buildRequestList(user!.uid, 'keluar'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildRequestList(String ownerId, String type) {
+    Stream<QuerySnapshot> requestStream = type == 'masuk'
+        ? ownerServices.list(ownerId)
+        : ownerServices.member(ownerId);
+
     return SingleChildScrollView(
       child: StreamBuilder(
-        stream: ownerServices.list(user!.uid),
+        stream: requestStream,
         builder: (context, snapshot) {
-          print(user!.uid);
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
@@ -36,64 +66,81 @@ class _RequestOwnerScreenState extends State<RequestOwnerScreen> {
               var item = items[index];
 
               return Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${item['user_email']}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Durasi ${item['durasi_sewa']} Bulan .",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                "Tgl ${item!['tanggal_mulai']} .",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${item['user_email']}",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "${item['name']}",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          "Durasi ${item['durasi_sewa']} Bulan",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          "Tgl ${item!['tanggal_mulai']}",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        // Periksa jenis permintaan
+                        if (type == 'masuk') // Jika permintaan masuk
                           IconButton(
                             onPressed: () {
-                              ownerServices.approve(items[index].id);
+                              ownerServices.approveMasuk(item.id);
                             },
                             icon: Icon(
                               Icons.check_circle,
                               color: Colors.green[400],
                             ),
                           ),
+                        if (type == 'masuk') // Jika permintaan masuk
                           IconButton(
                             onPressed: () {
-                              ownerServices.reject(items[index].id);
+                              ownerServices.rejectMasuk(item.id);
+                            },
+                            icon: Icon(
+                              Icons.cancel,
+                              color: Colors.grey[400],
+                            ),
+                          ),
+                        if (type == 'keluar') // Jika permintaan keluar
+                          IconButton(
+                            onPressed: () {
+                              ownerServices.approveKeluar(item.id);
+                            },
+                            icon: Icon(
+                              Icons.check_circle,
+                              color: Colors.green[400],
+                            ),
+                          ),
+                        if (type == "keluar")
+                          IconButton(
+                            onPressed: () {
+                              ownerServices.approveMasuk(item.id);
                             },
                             icon: Icon(
                               Icons.cancel,
                               color: Colors.grey[400],
                             ),
                           )
-                        ],
-                      )
-                    ],
-                  ));
-              // return ListTile(
-              //   title: Text("Nama: ${item['user_email']}"),
-              //   subtitle: Text(
-              //       "Durasi : ${item['durasi_sewa']} Bulan | Tanggal : ${item['tanggal_mulai']}"),
-              // );
+                      ],
+                    )
+                  ],
+                ),
+              );
             },
           );
         },

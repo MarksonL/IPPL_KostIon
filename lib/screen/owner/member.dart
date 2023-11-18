@@ -71,7 +71,7 @@ class _MemberListPageState extends State<MemberListPage> {
                     Row(
                       children: [
                         IconButton(
-                          onPressed: () => ownerServices.reject(item.id),
+                          onPressed: () => ownerServices.rejectMasuk(item.id),
                           icon: Icon(
                             Icons.cancel,
                             color: Colors.grey[400],
