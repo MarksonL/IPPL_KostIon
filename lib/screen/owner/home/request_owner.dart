@@ -54,7 +54,7 @@ class _RequestOwnerScreenState extends State<RequestOwnerScreen> {
         stream: requestStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -76,7 +76,7 @@ class _RequestOwnerScreenState extends State<RequestOwnerScreen> {
                       children: [
                         Text(
                           "${item['user_email']}",
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         Text(

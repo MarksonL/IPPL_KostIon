@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
-
 import 'package:flutter/material.dart';
 import 'package:kostlon/screen/member/kost/form_kerusakan.dart';
 import 'package:kostlon/screen/member/kost/form_pembayaran.dart';
@@ -8,11 +6,12 @@ import 'package:kostlon/utils/color_theme.dart';
 
 class RentDetailPage extends StatefulWidget {
   const RentDetailPage({
-    super.key,
+    Key? key,
     required this.id,
   });
 
   final String id;
+
   @override
   State<RentDetailPage> createState() => _RentDetailPageState();
 }
@@ -44,6 +43,7 @@ class _RentDetailPageState extends State<RentDetailPage> {
             );
           }
           var item = snapshot.data;
+
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -92,7 +92,12 @@ class _RentDetailPageState extends State<RentDetailPage> {
                       "nama_kos": item['name'],
                     },
                   ),
-                  ActionKeluar(),
+                  ActionKeluar(
+                    onKeluarPressed: () {
+                      memberServices.reqKeluar(widget.id);
+                      Navigator.pop(context);
+                    },
+                  ),
                 ],
               ),
             ),
@@ -105,8 +110,11 @@ class _RentDetailPageState extends State<RentDetailPage> {
 
 class ActionKeluar extends StatelessWidget {
   const ActionKeluar({
-    super.key,
-  });
+    Key? key,
+    required this.onKeluarPressed,
+  }) : super(key: key);
+
+  final VoidCallback onKeluarPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -119,8 +127,8 @@ class ActionKeluar extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Konfirmasi Keluar Kos'),
-                content: Text('Apakah Anda yakin ingin keluar kos?'),
+                title: const Text('Konfirmasi Keluar Kos'),
+                content: const Text('Apakah Anda yakin ingin keluar kos?'),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
@@ -132,21 +140,25 @@ class ActionKeluar extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pop();
                       showDialog(
-                          context: context,
-                          builder: ((context) {
-                            return AlertDialog(
-                              title: Text("Permintaan Dikirim"),
-                              content: Text(
-                                  "Permintaan keluar kost anda telah dikirim, mohon untuk menunggu dari konfirmasi dari pemilik kost"),
-                              actions: <Widget>[
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text("Oke"))
-                              ],
-                            );
-                          }));
+                        context: context,
+                        builder: ((context) {
+                          return AlertDialog(
+                            title: const Text("Permintaan Dikirim"),
+                            content: const Text(
+                                "Permintaan keluar kost anda telah dikirim, mohon untuk menunggu dari konfirmasi dari pemilik kost"),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  // Panggil callback dengan id saat permintaan keluar dikirim
+                                  onKeluarPressed();
+                                },
+                                child: Text("OK"),
+                              )
+                            ],
+                          );
+                        }),
+                      );
                     },
                     child: Text('Keluar Kos'),
                   ),
@@ -176,7 +188,7 @@ class ActionKeluar extends StatelessWidget {
 }
 
 class ActionLaporan extends StatelessWidget {
-  const ActionLaporan({super.key, required this.kos});
+  const ActionLaporan({Key? key, required this.kos});
   final Map<String, dynamic> kos;
 
   @override
@@ -216,7 +228,7 @@ class ActionLaporan extends StatelessWidget {
 }
 
 class ActionPembayaran extends StatelessWidget {
-  const ActionPembayaran({super.key, required this.kos});
+  const ActionPembayaran({Key? key, required this.kos});
   final Map<String, dynamic> kos;
   @override
   Widget build(BuildContext context) {

@@ -18,4 +18,8 @@ class MemberServices {
     final dataStream = db.doc(docId).snapshots();
     return dataStream;
   }
+
+  void reqKeluar(String docId) {
+    db.doc(docId).update({'reqKeluar': true});
+  }
 }

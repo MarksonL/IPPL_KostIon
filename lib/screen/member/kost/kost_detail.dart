@@ -229,6 +229,7 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
       'durasi_sewa': _durasi.text,
       'tanggal_mulai': _tanggalContainer.text,
       'approved': false,
+      'reqKeluar': false,
       'created_at': Timestamp.now(),
     };
     final res = memberServices.addData(body);
