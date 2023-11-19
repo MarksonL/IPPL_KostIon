@@ -6,10 +6,8 @@ import 'package:kostlon/screen/member/home_member.dart';
 import 'package:kostlon/screen/owner/home_owner.dart';
 import 'package:kostlon/screen/register.dart';
 import 'package:kostlon/screen/resetpassword.dart';
-import 'package:kostlon/screen/start_profile.dart';
 import 'package:kostlon/utils/color_theme.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:kostlon/services/kos_services.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -116,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(
+              const Center(
                 child: Text(
                   'KostIon',
                   style: TextStyle(
@@ -125,13 +123,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               TextInput(
                 val: _email,
                 label: 'Email',
                 isPassword: false,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextInput(
                 val: _password,
                 isPassword: true,
@@ -160,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -191,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 10),

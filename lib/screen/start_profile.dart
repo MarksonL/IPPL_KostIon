@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kostlon/screen/auth.dart';
-import 'package:kostlon/screen/member/home_member.dart';
-import 'package:kostlon/screen/owner/home_owner.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class StartProfilePage extends StatefulWidget {
@@ -29,21 +27,21 @@ class _StartProfilePageState extends State<StartProfilePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Konfirmasi'),
-          content: Text('Apakah Anda ingin menyimpan profil?'),
+          title: const Text('Konfirmasi'),
+          content: const Text('Apakah Anda ingin menyimpan profil?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Tutup dialog konfirmasi
               },
-              child: Text('Tidak'),
+              child: const Text('Tidak'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _saveProfile(); // Tutup dialog konfirmasi
               },
-              child: Text('Ya'),
+              child: const Text('Ya'),
             ),
           ],
         );
@@ -63,8 +61,8 @@ class _StartProfilePageState extends State<StartProfilePage> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text('Terjadi Kesalahan'),
-                content: Text('Mohon untuk dapat mengisi nama anda'),
+                title: const Text('Terjadi Kesalahan'),
+                content: const Text('Mohon untuk dapat mengisi nama anda'),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
@@ -105,7 +103,22 @@ class _StartProfilePageState extends State<StartProfilePage> {
         }
       }
     } catch (e) {
-      print('Kesalahan: $e');
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Terjadi Kesalahan'),
+              content: Text(
+                  'Terjadi kesalahan dalam proses ini, mohon coba lagi nanti'),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'))
+              ],
+            );
+          });
     }
   }
 
@@ -113,7 +126,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Atur Profil'),
+        title: const Text('Atur Profil'),
         backgroundColor: AppColor.primary,
       ),
       body: Padding(
@@ -128,7 +141,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _nameController,
               decoration: InputDecoration(
@@ -141,7 +154,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
                     borderSide: BorderSide(color: AppColor.primary),
                   )),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _nomorWa,
               decoration: InputDecoration(
@@ -189,14 +202,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            // Flexible(
-            //   flex: 1, // Proporsi fleksibilitas, bisa disesuaikan
-            //   child: Container(), // Spacer untuk memberi ruang kosong
-            // ),
-            // Expanded(
-            //   child: Container(), // Spacer untuk membuat tombol di tengah
-            // ),
+            const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: _submitProfile,
@@ -209,7 +215,7 @@ class _StartProfilePageState extends State<StartProfilePage> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 ),
-                child: Text('Simpan Profil'),
+                child: const Text('Simpan Profil'),
               ),
             ),
           ],

@@ -15,7 +15,6 @@ class HomeOwnerScreen extends StatefulWidget {
 
 class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
   final KosServices kosServices = KosServices();
-  final TextEditingController _search = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

@@ -82,15 +82,15 @@ class _RequestOwnerScreenState extends State<RequestOwnerScreen> {
                         ),
                         Text(
                           "${item['name']}",
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                         Text(
                           "Durasi ${item['durasi_sewa']} Bulan",
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                         Text(
-                          "Tgl ${item!['tanggal_mulai']}",
-                          style: TextStyle(fontSize: 16),
+                          "Tgl ${item['tanggal_mulai']}",
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ],
                     ),
@@ -188,15 +188,15 @@ class _RequestOwnerScreenState extends State<RequestOwnerScreen> {
                         ),
                         Text(
                           "${item['name']}",
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                         Text(
                           "Durasi ${item['durasi_sewa']} Bulan",
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                         Text(
-                          "Tgl ${item!['tanggal_mulai']}",
-                          style: TextStyle(fontSize: 16),
+                          "Tgl ${item['tanggal_mulai']}",
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ],
                     ),

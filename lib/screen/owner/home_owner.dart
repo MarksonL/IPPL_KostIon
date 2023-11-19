@@ -8,10 +8,10 @@ import 'package:kostlon/screen/owner/home/laporan_owner.dart';
 import 'package:kostlon/screen/owner/home/payment_owner.dart';
 import 'package:kostlon/screen/owner/home/profile_owner.dart';
 import 'package:kostlon/screen/owner/home/request_owner.dart';
-import 'package:kostlon/screen/owner/home/rules_owner.dart';
+// import 'package:kostlon/screen/owner/home/rules_owner.dart';
 import 'package:kostlon/screen/owner/kos/kos_form.dart';
 import 'package:kostlon/screen/owner/member.dart';
-import 'package:kostlon/screen/owner/rule/rule_form.dart';
+// import 'package:kostlon/screen/owner/rule/rule_form.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
 class HomeOwnerPage extends StatefulWidget {

@@ -42,4 +42,8 @@ class OwnerServices {
     db.doc(docId).update({'approved': false});
     db.doc(docId).delete();
   }
+
+  void rejectKeluar(String docId) {
+    db.doc(docId).update({'reqKeluar': false});
+  }
 }
