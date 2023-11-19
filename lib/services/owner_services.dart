@@ -5,7 +5,7 @@ class OwnerServices {
   final db01 = FirebaseFirestore.instance.collection('kos');
 
   // READ: ambil data kos
-  Stream<QuerySnapshot> list(String ownerId) {
+  Stream<QuerySnapshot> reqMasuk(String ownerId) {
     final dataStream = db
         .where('owner_id', isEqualTo: ownerId)
         .where('approved', isEqualTo: false)
@@ -18,6 +18,14 @@ class OwnerServices {
     final dataStream = db
         .where('owner_id', isEqualTo: ownerId)
         .where('approved', isEqualTo: true)
+        .snapshots();
+    return dataStream;
+  }
+
+  Stream<QuerySnapshot> reqKeluar(String ownerId) {
+    final dataStream = db
+        .where('owner_id', isEqualTo: ownerId)
+        .where('reqKeluar', isEqualTo: true)
         .snapshots();
     return dataStream;
   }

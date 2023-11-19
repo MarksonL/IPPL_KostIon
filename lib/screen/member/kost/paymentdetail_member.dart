@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/screen/owner/kos/components/list_text.dart';
-import 'package:kostlon/services/laporan_services.dart';
 import 'package:kostlon/services/payment_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 

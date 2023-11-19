@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/services/member_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -44,15 +43,15 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
           stream: kosServices.getDetail(widget.id),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasError) {
-              return Center(
+              return const Center(
                 child: Text('Error loading data'),
               );
             } else if (!snapshot.hasData || snapshot.data == null) {
-              return Center(
+              return const Center(
                 child: Text('Data not found'),
               );
             } else {
@@ -114,7 +113,7 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
+          title: const Text(
             'Ajukan Sewa',
             style: TextStyle(fontSize: 18),
           ),
@@ -123,7 +122,7 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Durasi Sewa / Bulan',
                   style: TextStyle(fontSize: 12, color: AppColor.textPrimary),
                 ),
@@ -137,10 +136,10 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
                     return null;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
-                Text(
+                const Text(
                   'Tanggal Sewa',
                   style: TextStyle(fontSize: 12, color: AppColor.textPrimary),
                 ),
