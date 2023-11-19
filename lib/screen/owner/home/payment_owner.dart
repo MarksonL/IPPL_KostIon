@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:kostlon/screen/owner/kos/paymentdetail_owner.dart';
 import 'package:kostlon/services/payment_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
@@ -37,6 +38,17 @@ class _PaymentOwnerScreenState extends State<PaymentOwnerScreen> {
                 "Jumlah: ${item['pembayaran']}",
                 style: TextStyle(fontSize: 16),
               ),
+              onTap: () {
+                final String id = items[index].id;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PaymentDetailOwner(
+                      id: id,
+                    ),
+                  ),
+                );
+              },
             );
           },
         );

@@ -10,7 +10,7 @@ import 'package:kostlon/screen/owner/home/profile_owner.dart';
 import 'package:kostlon/screen/owner/home/request_owner.dart';
 // import 'package:kostlon/screen/owner/home/rules_owner.dart';
 import 'package:kostlon/screen/owner/kos/kos_form.dart';
-import 'package:kostlon/screen/owner/member.dart';
+import 'package:kostlon/screen/owner/kos/components/member.dart';
 // import 'package:kostlon/screen/owner/rule/rule_form.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
@@ -92,31 +92,31 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
       body: SafeArea(
         child: _widgetOptions[_selectedIndex],
       ),
-      floatingActionButton: _selectedIndex != 3 && _selectedIndex != 4
-          ? FloatingActionButton(
-              onPressed: () {
-                switch (_selectedIndex) {
-                  case 0:
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const OwnerKostFormPage()),
-                    );
-                  case 1:
-                  case 2:
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MemberListPage()),
-                    );
-                  case 3:
-                  default:
-                }
-              },
-              backgroundColor: AppColor.primary,
-              child: _iconOptions[_selectedIndex],
-            )
-          : null,
+      floatingActionButton:
+          _selectedIndex != 1 && _selectedIndex != 3 && _selectedIndex != 4
+              ? FloatingActionButton(
+                  onPressed: () {
+                    switch (_selectedIndex) {
+                      case 0:
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const OwnerKostFormPage()),
+                        );
+                      case 2:
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MemberListPage()),
+                        );
+                      case 3:
+                      default:
+                    }
+                  },
+                  backgroundColor: AppColor.primary,
+                  child: _iconOptions[_selectedIndex],
+                )
+              : null,
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

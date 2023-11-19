@@ -60,6 +60,8 @@ class _PembayaranFormState extends State<PembayaranForm> {
     User? user = FirebaseAuth.instance.currentUser;
     paymentServices.store({
       "member_id": user!.uid,
+      "member_name": user.displayName,
+      "email_member": user.email,
       "image": urlImage,
       "status": "new",
       "pembayaran": _jumlahController.text,
