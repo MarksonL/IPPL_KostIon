@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:kostlon/screen/owner/kos/paymentdetail_owner.dart';
 import 'package:kostlon/services/payment_services.dart';
-import 'package:kostlon/utils/color_theme.dart';
+// import 'package:kostlon/utils/color_theme.dart';
 
 class PaymentOwnerScreen extends StatefulWidget {
   const PaymentOwnerScreen({super.key});
