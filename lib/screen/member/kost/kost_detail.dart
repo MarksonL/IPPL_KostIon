@@ -61,6 +61,7 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
                 "alamat": item['alamat'],
                 "owner": item['owner'],
                 "owner_id": item['owner_id'],
+                "jenis_kos": item['jenis_kos'],
                 "price": item['price'].toString(),
               };
 
@@ -71,6 +72,7 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
                 owner: item['owner'],
                 price: item['price'].toString(),
                 image: item['image'],
+                jenis_kos: item['jenis_kos'],
                 kosServices: KosServices(),
               );
             }
@@ -287,6 +289,7 @@ class BodyDetail extends StatelessWidget {
     this.owner,
     this.price,
     this.image,
+    this.jenis_kos,
     required this.kosServices,
   }) : super(key: key);
 
@@ -296,6 +299,7 @@ class BodyDetail extends StatelessWidget {
   final String? owner;
   final String? price;
   final String? image;
+  final String? jenis_kos;
   final KosServices kosServices;
 
   @override
@@ -344,7 +348,7 @@ class BodyDetail extends StatelessWidget {
                         color: Colors.blue,
                       ),
                       child: Text(
-                        'PUTRA',
+                        '${jenis_kos}',
                         style: TextStyle(
                           color: Colors.white,
                         ),

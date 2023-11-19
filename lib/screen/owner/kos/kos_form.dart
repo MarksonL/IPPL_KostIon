@@ -27,6 +27,7 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
   final KosServices kosServices = KosServices();
   int _jumlahKamar = 1; // Default jumlah kamar
   XFile? _selectedImage; // Inisialisasi _selectedImage dengan null
+  String _selectedJenisKos = 'Putra';
 
   Future<void> _getImage() async {
     final picker = ImagePicker();
@@ -94,6 +95,7 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
       "alamat": _alamatController.text,
       "publish": true,
       "jumlah": _jumlahKamar,
+      "jenis_kos": _selectedJenisKos,
       "created": Timestamp.now()
     };
 
@@ -183,6 +185,30 @@ class _OwnerKostFormPageState extends State<OwnerKostFormPage> {
               type: TextInputType.number,
             ),
             SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: DropdownButtonFormField<String>(
+                value: _selectedJenisKos,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedJenisKos = newValue!;
+                  });
+                },
+                items: <String>['Putra', 'Putri', 'Campuran']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                decoration: InputDecoration(
+                  labelText: 'Jenis Kos',
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(

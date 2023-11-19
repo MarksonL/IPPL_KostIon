@@ -9,6 +9,7 @@ class CardToko extends StatelessWidget {
     required this.image,
     required this.alamat,
     required this.harga,
+    // required this.jenis_kos,
     required this.onDetail,
   });
 
@@ -16,6 +17,7 @@ class CardToko extends StatelessWidget {
   String image;
   String alamat;
   String harga;
+  // String jenis_kos;
   Function onDetail;
 
   @override
@@ -61,6 +63,11 @@ class CardToko extends StatelessWidget {
                       maxLines: 1,
                       style: TextStyle(fontSize: 10),
                     ),
+                    // Text(
+                    //   'Jenis Kos: ${jenis_kos}',
+                    //   maxLines: 1,
+                    //   style: TextStyle(fontSize: 10),
+                    // ),
                   ],
                 ),
               ),
