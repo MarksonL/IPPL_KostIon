@@ -80,7 +80,7 @@ class _PembayaranFormState extends State<PembayaranForm> {
         backgroundColor: AppColor
             .primary, // Atur warna latar belakang app bar menjadi oranye
       ),
-      body: Container(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

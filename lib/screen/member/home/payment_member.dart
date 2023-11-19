@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/screen/member/kost/laporan_detail_member.dart';
 import 'package:kostlon/screen/member/kost/paymentdetail_member.dart';
@@ -15,6 +16,7 @@ class PaymentMemberScreen extends StatefulWidget {
 class _PaymentMemberScreenState extends State<PaymentMemberScreen> {
   PaymentServices paymentServices = PaymentServices();
   LaporanServices laporanServices = LaporanServices();
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +47,15 @@ class _PaymentMemberScreenState extends State<PaymentMemberScreen> {
                       }
 
                       var items = snapshot.data!.docs;
+                      var bayar = items
+                          .where((payments) =>
+                              payments['email_member'] == user?.email)
+                          .toList();
 
                       return ListView.builder(
-                        itemCount: items.length,
+                        itemCount: bayar.length,
                         itemBuilder: (context, index) {
-                          var item = items[index];
+                          var item = bayar[index];
 
                           return ListTile(
                             title: Text("${item['nama_kos']}"),
@@ -58,7 +64,7 @@ class _PaymentMemberScreenState extends State<PaymentMemberScreen> {
                               style: TextStyle(fontSize: 16),
                             ),
                             onTap: () {
-                              final String id = items[index].id;
+                              final String id = bayar[index].id;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -85,12 +91,15 @@ class _PaymentMemberScreenState extends State<PaymentMemberScreen> {
                       }
 
                       var items = snapshot.data!.docs;
+                      var laporan = items
+                          .where((reports) => reports['member_id'] == user?.uid)
+                          .toList();
 
                       return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: items.length,
+                        itemCount: laporan.length,
                         itemBuilder: (context, index) {
-                          var item = items[index];
+                          var item = laporan[index];
 
                           return ListTile(
                             title: Text(

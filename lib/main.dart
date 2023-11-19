@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kostlon/screen/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:loader_overlay/loader_overlay.dart';
 import 'firebase_options.dart';
 
 void main() async {
