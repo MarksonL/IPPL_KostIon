@@ -1,4 +1,4 @@
-package com.example.kostlon
+package com.itk.kostion
 
 import io.flutter.embedding.android.FlutterActivity
 
