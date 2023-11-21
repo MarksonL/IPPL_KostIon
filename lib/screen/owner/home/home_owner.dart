@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kostlon/components/card_toko.dart';
 import 'package:kostlon/screen/owner/kos/kos_detail.dart';
@@ -15,6 +16,7 @@ class HomeOwnerScreen extends StatefulWidget {
 
 class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
   final KosServices kosServices = KosServices();
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +31,10 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
               return Center(child: CircularProgressIndicator());
             }
             var items = snapshot.data?.docs;
+            var daftar =
+                items?.where((kos) => kos['owner_id'] == user?.uid).toList();
 
-            if (items!.isNotEmpty) {
+            if (daftar!.isNotEmpty) {
               return ListView(
                 children: [
                   // SizedBox(
@@ -46,15 +50,15 @@ class _HomeOwnerScreenState extends State<HomeOwnerScreen> {
                             childAspectRatio: 3 / 3.5,
                             crossAxisSpacing: 0,
                             mainAxisSpacing: 0),
-                        itemCount: items.length,
+                        itemCount: daftar.length,
                         itemBuilder: (context, index) {
                           return CardToko(
-                            title: items[index]['name'],
-                            image: items[index]['image'],
-                            alamat: items[index]['alamat'],
-                            harga: items[index]['price'].toString(),
+                            title: daftar[index]['name'],
+                            image: daftar[index]['image'],
+                            alamat: daftar[index]['alamat'],
+                            harga: daftar[index]['price'].toString(),
                             onDetail: () {
-                              final String id = items[index].id;
+                              final String id = daftar[index].id;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
