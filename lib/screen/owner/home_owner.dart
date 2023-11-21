@@ -49,7 +49,7 @@ class _HomeOwnerPageState extends State<HomeOwnerPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.primary,
-        title: Text("Kostlon"),
+        title: Text("Kost.ion"),
         centerTitle: true,
         elevation: 0,
         actions: [

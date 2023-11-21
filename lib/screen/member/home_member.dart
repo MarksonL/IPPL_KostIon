@@ -35,7 +35,7 @@ class _HomeMemberPageState extends State<HomeMemberPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Kostlon'),
+        title: Text('Kost.ion'),
         centerTitle: true,
         backgroundColor: AppColor.primary,
         elevation: 0,

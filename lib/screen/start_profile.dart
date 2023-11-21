@@ -119,7 +119,6 @@ class _StartProfilePageState extends State<StartProfilePage> {
               ],
             );
           });
-      print(e);
     }
   }
 
