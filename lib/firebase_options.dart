@@ -53,10 +53,10 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBxN8h9PuR7FZsLArIWX2SSmPJ2gh1WqV4',
-    appId: '1:140757588529:android:16456bc15d585c0758d310',
-    messagingSenderId: '140757588529',
-    projectId: 'kostlon',
-    storageBucket: 'kostlon.appspot.com',
+    apiKey: "AIzaSyCkLp8k0q5ZVIFG2MY55CV6kVmGjzCi8RQ",
+    appId: "1:766944778648:android:e650377b2c30dafe2db3ed",
+    messagingSenderId: "766944778648",
+    projectId: "kostion-fc656",
+    storageBucket: "kostion-fc656.appspot.com",
   );
 }
