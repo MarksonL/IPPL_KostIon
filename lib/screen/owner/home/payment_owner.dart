@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:kostlon/screen/owner/kos/paymentdetail_owner.dart';
 import 'package:kostlon/services/payment_services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:kostlon/utils/color_theme.dart';
 
 class PaymentOwnerScreen extends StatefulWidget {
@@ -14,6 +15,7 @@ class PaymentOwnerScreen extends StatefulWidget {
 
 class _PaymentOwnerScreenState extends State<PaymentOwnerScreen> {
   PaymentServices paymentServices = PaymentServices();
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -26,11 +28,14 @@ class _PaymentOwnerScreenState extends State<PaymentOwnerScreen> {
         }
 
         var items = snapshot.data!.docs;
+        var bayar = items
+            .where((payments) => payments['owner_id'] == user?.uid)
+            .toList();
 
         return ListView.builder(
-          itemCount: items.length,
+          itemCount: bayar.length,
           itemBuilder: (context, index) {
-            var item = items[index];
+            var item = bayar[index];
 
             return ListTile(
               title: Text("${item['nama_kos']}"),
@@ -39,7 +44,7 @@ class _PaymentOwnerScreenState extends State<PaymentOwnerScreen> {
                 style: TextStyle(fontSize: 16),
               ),
               onTap: () {
-                final String id = items[index].id;
+                final String id = bayar[index].id;
                 Navigator.push(
                   context,
                   MaterialPageRoute(

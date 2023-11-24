@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kostlon/services/kos_services.dart';
 import 'package:kostlon/services/laporan_services.dart';
 import 'package:kostlon/utils/color_theme.dart';
 
@@ -25,6 +26,8 @@ class _LaporanKerusakanFormState extends State<LaporanKerusakanForm> {
   TextEditingController _judulKerusakanController = TextEditingController();
   TextEditingController _keteranganController = TextEditingController();
   final storageRef = FirebaseStorage.instance.ref();
+  final KosServices kosServices = KosServices();
+  Map<String, dynamic> kos = {};
 
   XFile? _selectedImage;
   final LaporanServices laporanServices = LaporanServices();
@@ -52,20 +55,35 @@ class _LaporanKerusakanFormState extends State<LaporanKerusakanForm> {
     }
   }
 
-  void storeData(BuildContext context, String urlImage) {
-    User? user = FirebaseAuth.instance.currentUser;
-    laporanServices.store({
-      "member_id": user!.uid,
-      "image": urlImage,
-      "status": "dilaporkan", //status awal
-      "no_kamar": _nomorKamarController.text,
-      "kerusakan": _judulKerusakanController.text,
-      "deskripsi": _keteranganController.text,
-      ...widget.kos,
-      "created": Timestamp.now()
-    });
+  void storeData(BuildContext context, String urlImage) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
 
-    Navigator.pop(context);
+      // Ambil data kos berdasarkan ID kos dari widget
+      DocumentSnapshot kosDoc =
+          await KosServices().getDetail(widget.kos['kos_id']).first;
+      Map<String, dynamic> kosData = kosDoc.data() as Map<String, dynamic>;
+
+      // Simpan data laporan beserta informasi dari data kos
+      laporanServices.store({
+        "member_id": user!.uid,
+        "image": urlImage,
+        "status": "dilaporkan",
+        "no_kamar": _nomorKamarController.text,
+        "kerusakan": _judulKerusakanController.text,
+        "deskripsi": _keteranganController.text,
+        "created": Timestamp.now(),
+        "kos_id": widget.kos['kos_id'], // Tambahkan kos_id
+        "owner_id": kosData['owner_id'], // Tambahkan owner_id
+        "nama_kos": kosData['name'],
+        // Tambahkan field lain yang diinginkan
+      });
+
+      Navigator.pop(context);
+    } catch (e) {
+      // Handle error jika terjadi kesalahan
+      debugPrint('Terjadi kesalahan: $e');
+    }
   }
 
   @override

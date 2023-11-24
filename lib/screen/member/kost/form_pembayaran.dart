@@ -58,18 +58,36 @@ class _PembayaranFormState extends State<PembayaranForm> {
 
   void storeData(BuildContext context, String urlImage) {
     User? user = FirebaseAuth.instance.currentUser;
-    paymentServices.store({
-      "member_id": user!.uid,
-      "member_name": user.displayName,
-      "email_member": user.email,
-      "image": urlImage,
-      "status": "new",
-      "pembayaran": _jumlahController.text,
-      ...widget.kos,
-      "created": Timestamp.now()
-    });
 
-    Navigator.pop(context);
+    // Ambil data kos berdasarkan ID kos dari widget
+    Stream<DocumentSnapshot<Object?>> kosDataStream =
+        kosServices.getDetail(widget.kos['kos_id']);
+    kosDataStream.listen((DocumentSnapshot kosDoc) {
+      if (kosDoc.exists) {
+        Map<String, dynamic> kosData = kosDoc.data() as Map<String, dynamic>;
+
+        // Simpan data pembayaran beserta informasi dari data kos
+        paymentServices.store({
+          "member_id": user!.uid,
+          "member_name": user.displayName,
+          "email_member": user.email,
+          "image": urlImage,
+          "status": "new",
+          "pembayaran": _jumlahController.text,
+          "created": Timestamp.now(),
+          // Tambahkan informasi dari data kos
+          "kos_id": widget.kos['kos_id'],
+          "owner_id": kosData['owner_id'],
+          "nama_kos": kosData['name'],
+          // Tambahkan field lain yang diinginkan
+        });
+
+        Navigator.pop(context);
+      } else {
+        // Handle jika data kos tidak ditemukan
+        debugPrint('Data kos tidak ditemukan.');
+      }
+    });
   }
 
   @override

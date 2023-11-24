@@ -89,7 +89,7 @@ class _MemberKostDetailState extends State<MemberKostDetail> {
             SizedBox(height: 15),
             FloatingActionButton.extended(
               onPressed: () => _openWhatsApp(),
-              label: Text("Buka Whatsapp"),
+              label: Text("Chat Owner"),
               backgroundColor: AppColor.primary,
             )
           ],
