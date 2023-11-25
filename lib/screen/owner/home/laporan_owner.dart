@@ -35,8 +35,14 @@ class _LaporanOwnerScreenState extends State<LaporanOwnerScreen> {
             var item = laporan[index];
 
             return ListTile(
-              title: Text("${item['kerusakan']} - Kamar (${item['no_kamar']})"),
-              subtitle: Text("${item['deskripsi']}"),
+              title: Text("${item['nama_kos']} - Kamar (${item['no_kamar']})"),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Laporan: ${item['kerusakan']}"),
+                  Text("Status Laporan: ${item['status']}"),
+                ],
+              ),
               onTap: () {
                 final String id = laporan[index].id;
                 Navigator.push(
